@@ -682,7 +682,7 @@
                                                             <p class="review-o__text">{{ rew.reviewz }}</p>
                                                             <a href="{% url 'review_reply' rew.id %}" style="text-decoration: none ;"><span class="review-o__date">Reply</span></a>
                                                             {% if user.username == rew.reviewer.username %}
-                                                            <a href="{% url 'review_delete' rew.post.id rew.reviewer.id %}" style="text-decoration: none ;"><span class="review-o__date">delete</span></a>
+                                                            <a href="{% url 'review_delete' rew.id rew.post.id rew.reviewer.id %}" style="text-decoration: none ;"><span class="review-o__date">delete</span></a>
                                                             {% endif %}
                                                         </div>
                                                         </div>

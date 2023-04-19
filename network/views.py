@@ -3531,7 +3531,7 @@ def reply_delete(request,pk,id):
 
 
 
-def review_delete(request,pk,id):
-    rep=review.objects.get(post__id=pk)
+def review_delete(request,nj,pk,id):
+    rep=review.objects.get(id=nj)
     rep.delete()
     return redirect('product_detail',pk,id)

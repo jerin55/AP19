@@ -140,10 +140,14 @@ urlpatterns = [
     path('Join_friends/<int:id>',views.Join_friends,name='Join_friends'),
 
     path('Join_friends_reqest/<int:id>',views.Join_friends_reqest,name='Join_friends_reqest'),
+
     path('review_reply/<int:pk>',views.review_reply,name='review_reply'),
+
     path("reply/<int:userid>", views.reply, name="reply"),
+
     path("reply_delete/<int:pk>/<int:id>", views.reply_delete, name="reply_delete"),
-    path("review_delete/<int:pk>/<int:id>", views.review_delete, name="review_delete"),
+
+    path("review_delete/<int:nj>/<int:pk>/<int:id>", views.review_delete, name="review_delete"),
 
 
 
