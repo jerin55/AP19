@@ -141,7 +141,7 @@ class Post(models.Model):
     Offer_price=models.IntegerField(null=True,blank=True)
     Offer_Start_Date = models.DateField(null=True,blank=True)
     Offer_End_Date = models.DateField(null=True,blank=True)
-    viewers = models.IntegerField(default=0)
+    
 
 
     def __str__(self):
