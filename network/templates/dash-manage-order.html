@@ -60,9 +60,9 @@
 
                                     
 
-                                  {% if ship  %}  
-                {% for i in ship %}
-                                    <form class="checkout-f__delivery" action="{% url 'shipping_address' %}" method="POST">{% csrf_token %}
+                             
+               
+                                    <form class="checkout-f__delivery" action="{% url 'order_item' pos.id pos.creater.id  %}" method="POST">{% csrf_token %}
                                        
                                         <div class="u-s-m-b-30">
                                             <div class="u-s-m-b-15">
@@ -84,7 +84,7 @@
 
                                                     <label class="gl-label" for="billing-fname">Full name*</label>
 
-                                                    <input class="input-text input-text--primary-style" type="text" id="billing-fname" data-bill="" name="fullname" value="{{i.Full_name}}"></div>
+                                                    <input class="input-text input-text--primary-style" type="text" id="billing-fname" data-bill="" name="fullname" value="{{pos.Full_name}}"></div>
                                                 
                                             </div>
                                             <!--====== End - First Name, Last Name ======-->
@@ -215,9 +215,9 @@
                                                 <div class="check-box">
 
                                                     <input type="checkbox" id="make-default-address" data-bill="">
-                                                    <div class="check-box_state check-box_state--primary">
+                                                    <!-- <div class="check-box_state check-box_state--primary">
 
-                                                        <label class="check-box__label" for="make-default-address">Make default shipping and billing address</label></div>
+                                                        <label class="check-box__label" for="make-default-address">Make default shipping and billing address</label></div> -->
                                                 </div>
                                                 <!--====== End - Check Box ======-->
                                             </div>
@@ -242,189 +242,8 @@
                                         </div>
                                         
                                     </form>
-                                    {% endfor %}
-                                    {% else %}
-                                    <form class="checkout-f__delivery" action="{% url 'shipping_address' %}" method="POST">{% csrf_token %}
-                                       
-                                        <div class="u-s-m-b-30">
-                                            <div class="u-s-m-b-15">
 
-                                                <!--====== Check Box ======-->
-                                                <!-- <div class="check-box">
-
-                                                    <input type="checkbox" id="get-address">
-                                                    <div class="check-box_state check-box_state--primary">
-
-                                                        <label class="check-box__label" for="get-address">Use default shipping and billing address from account</label></div>
-                                                </div> -->
-                                                <!--====== End - Check Box ======-->
-                                            </div>
-
-                                            <!--====== First Name, Last Name ======-->
-                                            <div class="gl-inline">
-                                                <div class="u-s-m-b-15">
-
-                                                    <label class="gl-label" for="billing-fname">Full name*</label>
-
-                                                    <input class="input-text input-text--primary-style" type="text" id="billing-fname" data-bill="" name="fullname" value="{{i.Full_name}}"></div>
-                                                
-                                            </div>
-                                            <!--====== End - First Name, Last Name ======-->
-
-
-                                            <!--====== E-MAIL ======-->
-                                            <!-- <div class="u-s-m-b-15">
-
-                                                <label class="gl-label" for="billing-email">E-MAIL *</label>
-
-                                                <input class="input-text input-text--primary-style" type="text" id="billing-email" data-bill=""></div> -->
-                                            <!--====== End - E-MAIL ======-->
-
-
-                                            <!--====== PHONE ======-->
-                                            <div class="u-s-m-b-15">
-
-                                                <label class="gl-label" for="billing-phone">Mobile number*</label>
-
-                                                <input class="input-text input-text--primary-style" type="text" id="billing-phone" data-bill="" name="phone" value="{{i.Phone}}"></div>
-                                            <!--====== End - PHONE ======-->
-
-
-                                            <!--====== Street Address ======-->
-                                            <div class="u-s-m-b-15">
-
-                                                <label class="gl-label" for="billing-street">Flat,House no,Building,Company,Apartment *</label>
-
-                                                <input class="input-text input-text--primary-style" type="text" id="billing-street" placeholder="House name and street name" data-bill="" name="house" value="{{i.House }}"></div>
-                                            <!-- <div class="u-s-m-b-15">
-
-                                                <label for="billing-street-optional"></label>
-
-                                                <input class="input-text input-text--primary-style" type="text" id="billing-street-optional" placeholder="Apartment, suite unit etc. (optional)" data-bill=""></div> -->
-                                            <!--====== End - Street Address ======-->
-                                            <div class="u-s-m-b-15">
-
-                                                <label class="gl-label" for="Area">Area,Street,Sector,Village*</label>
-
-                                                <input class="input-text input-text--primary-style" type="text" id="Area" data-bill="" name="area" value="{{i.Area}}"></div>
-
-                                                <div class="u-s-m-b-15">
-
-                                                    <label class="gl-label" for="Landmark">Landmark*</label>
-    
-                                                    <input class="input-text input-text--primary-style" type="text" id="Landmark" data-bill="" name="landmark" value="{{i.Landmark}}"></div>
-
-                                                    <!-- <div class="u-s-m-b-15">
-
-                                                        <label class="gl-label" for="Town/Cit">Town/City*</label>
-        
-                                                        <input class="input-text input-text--primary-style" type="text" id="Town/Cit" data-bill=""></div> -->
-
-
-                                            <!--====== Country ======-->
-                                        
-                                            <!--====== End - Country ======-->
-
-
-                                            <!--====== Town / City ======-->
-                                            <div class="u-s-m-b-15">
-
-                                                <label class="gl-label" for="billing-town-city">Twon/City *</label>
-
-                                                <input class="input-text input-text--primary-style" type="text" id="billing-town-city" data-bill="" name="town" value="{{i.Town}}"></div>
-                                            <!--====== End - Town / City ====== -->
-
-
-                                            <!--====== STATE/PROVINCE ======-->
-                                            <div class="u-s-m-b-15">
-
-                                                <!--====== Select Box ======-->
-
-                                                <label class="gl-label" for="billing-state">State *</label>
-                                                <select class="select-box select-box--primary-style" id="billing-state" data-bill="" name="state" value="{{i.State }}">
-                                                    <option value="Andhra Pradesh">Andhra Pradesh</option>
-<option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
-<option value="Arunachal Pradesh">Arunachal Pradesh</option>
-<option value="Assam">Assam</option>
-<option value="Bihar">Bihar</option>
-<option value="Chandigarh">Chandigarh</option>
-<option value="Chhattisgarh">Chhattisgarh</option>
-<option value="Dadar and Nagar Haveli">Dadar and Nagar Haveli</option>
-<option value="Daman and Diu">Daman and Diu</option>
-<option value="Delhi">Delhi</option>
-<option value="Lakshadweep">Lakshadweep</option>
-<option value="Puducherry">Puducherry</option>
-<option value="Goa">Goa</option>
-<option value="Gujarat">Gujarat</option>
-<option value="Haryana">Haryana</option>
-<option value="Himachal Pradesh">Himachal Pradesh</option>
-<option value="Jammu and Kashmir">Jammu and Kashmir</option>
-<option value="Jharkhand">Jharkhand</option>
-<option value="Karnataka">Karnataka</option>
-<option value="Kerala">Kerala</option>
-<option value="Madhya Pradesh">Madhya Pradesh</option>
-<option value="Maharashtra">Maharashtra</option>
-<option value="Manipur">Manipur</option>
-<option value="Meghalaya">Meghalaya</option>
-<option value="Mizoram">Mizoram</option>
-<option value="Nagaland">Nagaland</option>
-<option value="Odisha">Odisha</option>
-<option value="Punjab">Punjab</option>
-<option value="Rajasthan">Rajasthan</option>
-<option value="Sikkim">Sikkim</option>
-<option value="Tamil Nadu">Tamil Nadu</option>
-<option value="Telangana">Telangana</option>
-<option value="Tripura">Tripura</option>
-<option value="Uttar Pradesh">Uttar Pradesh</option>
-<option value="Uttarakhand">Uttarakhand</option>
-<option value="West Bengal">West Bengal</option>
-                                                </select>
-                                                <!--====== End - Select Box ======-->
-                                            </div>
-                                            <!--====== End - STATE/PROVINCE ======-->
-
-
-                                            <!--====== ZIP/POSTAL ======-->
-                                            <div class="u-s-m-b-15">
-
-                                                <label class="gl-label" for="billing-zip">Zip/Postal Code *</label>
-
-                                                <input class="input-text input-text--primary-style" type="text" id="billing-zip" placeholder="Zip/Postal Code" data-bill="" name="zip" value="{{i.Zip}}"></div>
-                                            <!--====== End - ZIP/POSTAL ======-->
-                                            <div class="u-s-m-b-10">
-
-                                                <!--====== Check Box ======-->
-                                                <div class="check-box">
-
-                                                    <input type="checkbox" id="make-default-address" data-bill="">
-                                                    <div class="check-box_state check-box_state--primary">
-
-                                                        <label class="check-box__label" for="make-default-address">Make default shipping and billing address</label></div>
-                                                </div>
-                                                <!--====== End - Check Box ======-->
-                                            </div>
-                                            <!-- <div class="u-s-m-b-10">
-
-                                                <a class="gl-link" href="#create-account" data-toggle="collapse">Want to create a new account?</a></div>
-                                            <div class="collapse u-s-m-b-15" id="create-account">
-
-                                                <span class="gl-text u-s-m-b-15">Create an account by entering the information below. If you are a returning customer please login at the top of the page.</span>
-                                                <div>
-
-                                                    <label class="gl-label" for="reg-password">Account Password *</label>
-
-                                                    <input class="input-text input-text--primary-style" type="text" data-bill id="reg-password"></div>
-                                            </div> -->
-                                            <!-- <div class="u-s-m-b-10">
-
-                                                <label class="gl-label" for="order-note">ORDER NOTE</label><textarea class="text-area text-area--primary-style" id="order-note"></textarea></div> -->
-                                            <div>
-
-                                                <button class="btn btn--e-transparent-brand-b-2" type="submit">SAVE</button></div>
-                                        </div>
-                                        
-                                    </form>
-                                    {% endif %}
+                                   
                                     
                                   
 
@@ -439,35 +258,7 @@
 
                                     <!--====== Order Summary ======-->
                                     <div >
-                                        <div >
-                                            <div class="order-flex-wrapper">
-                                                <div class="order-item-img">
-                                                    <div class="img-order-lg">
-                                                        <img src="{{ pos.content_image.url }}"  alt="">
-                                            
-                                                    </div>
-                                                </div>
-                                                <div class="order-detail-block">
-                                                    <h5>{{ pos.product.content_image }}</h5>
-                                                    <h6>Training Book</h6>
-                                                    <p>Java is a class-based, object-oriented programming language...</p>
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="mt-2 mb-2">
-                                                <h6>Seller</h6>
-                                                <div class="seller-profile">
-                                                    <div class="seller-profile-img">
-                                                        <img src="{{ pos.creater.profile_pic.url }}" alt="">
-                                                    </div>
-                                                    <div>
-                                                        <h6>{{ pos.creater.username }}</h6>
-                                                        <p>{{ pos.creater.category }}</p>
-                                                    </div>
-                                                </div> 
-                                            </div><br>
-                                            
-                                        </div>
+                                       
                                         <div class="o-summary__section u-s-m-b-30">
                                             <div class="o-summary__box">
                                                 <h1 class="checkout-f__h1">SHIPPING & BILLING</h1>
@@ -505,7 +296,7 @@
                                                 
                                                     
                                                
-                                                <a href="{% url 'my_order' %}"><button style="background-color: #17bf63; border: #17bf63;" class="btn btn--e-brand-b-2" type="submit">PLACE ORDER</button></a>
+                                                <a href="{% url 'confirm_order' pos.id pos.creater.id %}"><button style="background-color: #17bf63; border: #17bf63;" class="btn btn--e-brand-b-2" type="submit">CONFIRM ORDER</button></a>
                                             </div>
                                         </div>
                                     </div>
@@ -619,80 +410,7 @@
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-body">
-                        <div class="checkout-modal1">
-                            <form class="checkout-modal1__form">
-                                <div class="u-s-m-b-30">
-                                    <h1 class="gl-modal-h1">Add new Shipping Address</h1>
-                                </div>
-                                <div class="gl-inline">
-                                    <div class="u-s-m-b-30">
-
-                                        <label class="gl-label" for="address-fname">FIRST NAME *</label>
-
-                                        <input class="input-text input-text--primary-style" type="text" id="address-fname" placeholder="First Name"></div>
-                                    <div class="u-s-m-b-30">
-
-                                        <label class="gl-label" for="address-lname">LAST NAME *</label>
-
-                                        <input class="input-text input-text--primary-style" type="text" id="address-lname" placeholder="Last Name"></div>
-                                </div>
-                                <div class="gl-inline">
-                                    <div class="u-s-m-b-30">
-
-                                        <label class="gl-label" for="address-phone">PHONE *</label>
-
-                                        <input class="input-text input-text--primary-style" type="text" id="address-phone"></div>
-                                    <div class="u-s-m-b-30">
-
-                                        <label class="gl-label" for="address-street">STREET ADDRESS *</label>
-
-                                        <input class="input-text input-text--primary-style" type="text" id="address-street" placeholder="House Name and Street"></div>
-                                </div>
-                                <div class="gl-inline">
-                                    <div class="u-s-m-b-30">
-
-                                        <!--====== Select Box ======-->
-
-                                        <label class="gl-label" for="address-country">COUNTRY *</label><select class="select-box select-box--primary-style" id="address-country">
-                                            <option selected value="">Choose Country</option>
-                                            <option value="uae">United Arab Emirate (UAE)</option>
-                                            <option value="uk">United Kingdom (UK)</option>
-                                            <option value="us">United States (US)</option>
-                                        </select>
-                                        <!--====== End - Select Box ======-->
-                                    </div>
-                                    <div class="u-s-m-b-30">
-
-                                        <!--====== Select Box ======-->
-
-                                        <label class="gl-label" for="address-state">STATE/PROVINCE *</label><select class="select-box select-box--primary-style" id="address-state">
-                                            <option selected value="">Choose State/Province</option>
-                                            <option value="al">Alabama</option>
-                                            <option value="al">Alaska</option>
-                                            <option value="ny">New York</option>
-                                        </select>
-                                        <!--====== End - Select Box ======-->
-                                    </div>
-                                </div>
-                                <div class="gl-inline">
-                                    <div class="u-s-m-b-30">
-
-                                        <label class="gl-label" for="address-city">TOWN/CITY *</label>
-
-                                        <input class="input-text input-text--primary-style" type="text" id="address-city"></div>
-                                    <div class="u-s-m-b-30">
-
-                                        <label class="gl-label" for="address-street">ZIP/POSTAL CODE *</label>
-
-                                        <input class="input-text input-text--primary-style" type="text" id="address-postal" placeholder="Zip/Postal Code"></div>
-                                </div>
-                                <div class="gl-modal-btn-group">
-
-                                    <button class="btn btn--e-brand-b-2" type="submit">SAVE</button>
-
-                                    <button class="btn btn--e-grey-b-2" type="button" data-dismiss="modal">CANCEL</button></div>
-                            </form>
-                        </div>
+                        
                     </div>
                 </div>
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Id, laborum.

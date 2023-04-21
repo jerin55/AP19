@@ -114,6 +114,7 @@ class Post(models.Model):
     date_created = models.DateTimeField(default=timezone.now)
     content_text = models.TextField(max_length=140, blank=True)
     status=models.CharField(max_length=255,null=True)
+    average_rating = models.IntegerField( default=0,null=True)
 
     
     
@@ -267,48 +268,25 @@ class Cart(models.Model):
 
 
 
-class Shipping_address(models.Model):
-    user = models.ForeignKey(User,on_delete=models.CASCADE)  
-    Full_name = models.CharField(max_length=255)
-    Phone = models.CharField(max_length=12)
-    House  = models.CharField(max_length=255)
-    Area = models.CharField(max_length=60)
-    Landmark = models.CharField(max_length=60)
-    Town =  models.CharField(max_length=60)
-    State =  models.CharField(max_length=60)
-    Zip = models.IntegerField()
-    
-    def __str__(self):
-        return self.Full_name
-
-
 class Order(models.Model):
-    user = models.ForeignKey(User,on_delete=models.CASCADE) 
-    shipping_address = models.ForeignKey(Shipping_address,on_delete=models.CASCADE) 
-    total_price = models.FloatField(null=False)
-    payment_mode = models.CharField(max_length=255,null=False)
-   
-    Order_statuses = (
-        ('Pending','Pending'),
-        ('Out For Shipping','Out For Shipping'),
-        ('Completed','Completed'),
-
-    )
+    user = models.ForeignKey(User,on_delete=models.CASCADE)  
+    Full_name = models.CharField(max_length=255,null=True)
+    Phone = models.CharField(max_length=12,null=True)
+    House  = models.CharField(max_length=255,null=True)
+    Area = models.CharField(max_length=60,null=True)
+    Landmark = models.CharField(max_length=60,null=True)
+    Town =  models.CharField(max_length=60,null=True)
+    State =  models.CharField(max_length=60,null=True)
+    Zip = models.IntegerField(null=True)
+    
     
 
-
-    status =models.CharField(max_length=150,choices=Order_statuses,default='Pending')
-    tracking_no = models.CharField(max_length=150,null=True)
-    create_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateField(auto_now_add=True)
 
     
 class Order_Item(models.Model):
-    user = models.ForeignKey(User,on_delete=models.CASCADE)  
     order = models.ForeignKey(Order,on_delete=models.CASCADE) 
-    product = models.ForeignKey(Product,on_delete=models.CASCADE)
-    price = models.IntegerField(null=False)
-    quanty = models.IntegerField(null=False)   
+    product = models.ForeignKey(Post,on_delete=models.CASCADE)
+    
 
 
 class friend_request(models.Model):
@@ -386,4 +364,14 @@ class invite_request(models.Model):
     
     status =models.CharField(max_length=150,choices=inv_statuses,default='Pending')
 
-    
+
+class download(models.Model):
+    post=models.ForeignKey(Post,related_name='downloading_post',on_delete=models.CASCADE)    
+    user=models.ForeignKey(User,related_name='downloading_user',on_delete=models.CASCADE)
+    download_date=models.DateTimeField(default=timezone.now)
+
+
+
+class viewers(models.Model):
+    post=models.ForeignKey(Post,related_name='viewed_post',on_delete=models.CASCADE)   
+    user=models.ForeignKey(User,related_name='viewed_user',on_delete=models.CASCADE)

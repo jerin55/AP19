@@ -246,7 +246,7 @@
                                                     <div class="table-p__del-wrap">
                                                       
 
-                                                      <b> <a class="btn btn-success" href="{% url 'manage_order' i.product.id %}" style="text-decoration: none;color: white;border-radius: 12px;">Buy</a></b>&nbsp;&nbsp;
+                                                      <b> <a class="btn btn-success" href="{% url 'order_manage' i.product.id i.product.creater.id %}" style="text-decoration: none;color: white;border-radius: 12px;">Buy</a></b>&nbsp;&nbsp;
                                                       <a class="far fa-trash-alt table-p__delete-link" href="{% url 'remove_cart' i.id %}"></a></div>
                                                 </td>
                                                 <!-- <td>

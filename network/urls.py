@@ -77,7 +77,8 @@ urlpatterns = [
     path('remove_cart_all',views.remove_cart_all,name='remove_cart_all'),
 
     
-    path('shipping_address',views.shipping_address,name='shipping_address'),
+    path('order_item/<int:product_id>/<int:uid>',views.order_item,name='order_item'),
+    path('Orderss/<int:pk>',views.Orderss,name='Orderss'),
     
 
     path('place_order/<int:id>',views.place_order,name='place_order'),
@@ -94,10 +95,18 @@ urlpatterns = [
 
     path('track_order',views.track_order,name='track_order'),
 
-    path('n/my_order',views.my_order,name='my_order'),
 
-    path('manage_order/<int:id>',views.manage_order,name='manage_order'),
+    path('confirm_order/<int:pk>',views.confirm_order,name='confirm_order'),
+
+    path('my_order/<int:pk>/<int:kk>',views.my_order,name='my_order'),
+
+    # path('manage_order/<int:id>/<int:pk>',views.manage_order,name='manage_order'),
+
+
+
+
     path('n/pagepost/<int:pk>',views.pagepost,name='pagepost'),
+
     path('n/mypage/<int:pk>',views.mypage,name='mypage'),
   
     path('n/edit_profile/<int:pk>',views.edit_profile,name='edit_profile'),
@@ -148,6 +157,15 @@ urlpatterns = [
     path("reply_delete/<int:pk>/<int:id>", views.reply_delete, name="reply_delete"),
 
     path("review_delete/<int:nj>/<int:pk>/<int:id>", views.review_delete, name="review_delete"),
+
+
+
+    path("order_manage/<int:id>/<int:uid>",views.order_manage, name="order_manage"),
+    path("confirm_order/<int:id>/<int:pk>",views.confirm_order, name="confirm_order"),
+    path("download_histoy/<int:id>/<int:pk>",views.download_histoy, name="download_histoy"),
+    path('post/<int:post_id>/wishlist-users/', views.wishlist_users, name='wishlist-users'),
+
+
 
 
 

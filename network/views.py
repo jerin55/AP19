@@ -508,12 +508,45 @@ def profile(request, username):
        
     })
 
+def wishlist_users(request, post_id):
+    wishlist_items = wishlist.objects.filter(post_id=post_id)
+    users = [item.usr.username for item in wishlist_items]
+    return JsonResponse({'users': users})
+
+
 
 @csrf_exempt
 @login_required(login_url='login')
 def buyprofile(request, username):
     user = User.objects.get(id=username)
-    all_posts = Post.objects.filter(creater=user).annotate(num_wishlist=Count('postz')).order_by('-date_created')
+    # all_posts = Post.objects.filter(creater=user).annotate(num_wishlist=Count('postz')).order_by('-date_created')
+
+
+    user_following_list = []
+    feed = []
+
+    # last_24_hours = timezone.now() - timezone.timedelta(hours=24)
+   
+    us=request.user
+
+    user_following = friend_request.objects.filter(from_user__username=request.user.username)
+
+
+    for users in user_following:
+        user_following_list.append(users.to_user)
+
+    for usernames in user_following_list:
+        feeds = Post.objects.filter(creater=usernames)  
+        
+        feed.append(feeds,)
+
+        all_posts = list(chain(*feed))
+
+
+
+
+
+    posts = list(chain(*feed))
     frd = friend.objects.filter()
     rqst=friend_request.objects.filter()
     topic_foll=intrest_followers.objects.all()
@@ -533,8 +566,19 @@ def buyprofile(request, username):
     posts = paginator.get_page(page_number)
 
     post_count = len(posts)
+
+    
+
+
+
     
     
+    
+
+
+
+
+
 
     to=request.user.id
     fr=username
@@ -559,7 +603,7 @@ def buyprofile(request, username):
         "username": user,
         "posts": posts,
         'button_text': button_text,
-        "posts_count": all_posts.count(),
+       
         "rqst":rqst,
         "page": "profile",
         "suggestions": suggestions,      
@@ -1269,6 +1313,12 @@ def product_detail(request,id,userid):
     avav = avav = avg / average if average != 0 else 0
 
 
+    post = Post.objects.get(id=id)
+    post.average_rating = avav
+    post.save()
+    
+
+
     if friend_request.objects.filter(from_user_id=to,to_user_id=userid,stat='following').first():
          button_text = 'Unfollow'
     else:  
@@ -1407,7 +1457,7 @@ def remove_cart_all(request):
 def checkout(request):
     crt=Cart.objects.filter(user=request.user)
     crt_count = crt.count()
-    ship = Shipping_address.objects.filter(user=request.user)
+    ship = Order.objects.filter(user=request.user)
 
     sub_total=0 
     grand_total = 0
@@ -1418,7 +1468,7 @@ def checkout(request):
 
     grand_total =  sub_total + shipping
  
-    orderitem = Order_Item.objects.filter(user=request.user)
+    
     shipadd = ""
     for i in ship:
         shipadd = str(i.Full_name)+" , " + str(i.House)+" , "  + str(i.Area)+" , "+ str(i.Landmark)+" , " + str(i.Town)+" , " + str(i.State)+" , " + str(i.Zip)+" , " + str(i.Phone)
@@ -1432,7 +1482,7 @@ def checkout(request):
         'shipping'  : shipping,
         'grand_total' : grand_total,
         'ship'    :   ship,
-        'orderitem'  : orderitem,
+        
         'shipadd'  : shipadd,
         
     }
@@ -1441,11 +1491,13 @@ def checkout(request):
 
 @csrf_exempt
 @login_required(login_url='signin')
-def shipping_address(request):
+
+
+def order_item(request, product_id,uid):
     if request.method=='POST':
         user=User.objects.get(id=request.user.id)
-        if Shipping_address.objects.filter(user=request.user).exists():
-            ship1 =Shipping_address.objects.get(user=request.user)
+        if Order.objects.filter(user=request.user).exists():
+            ship1 =Order.objects.get(user=request.user)
             ship1.user=user
             ship1.Full_name = request.POST['fullname']
             ship1.Phone = request.POST['phone']
@@ -1456,9 +1508,9 @@ def shipping_address(request):
             ship1.State = request.POST['state']
             ship1.Zip = request.POST['zip']
             ship1.save()
-            return redirect('checkout')
+            return redirect('order_manage',product_id,uid)
         else:
-            ship=Shipping_address()
+            ship=Order()
             ship.user=user
             ship.Full_name = request.POST['fullname']
             ship.Phone = request.POST['phone']
@@ -1469,53 +1521,60 @@ def shipping_address(request):
             ship.State = request.POST['state']
             ship.Zip = request.POST['zip']
             ship.save()
-            return redirect('checkout')
+       
+        
+       
+        return redirect('order_manage',product_id,uid)
+    
+    # If the request method is not POST, render the order form template
+    return render(request, 'order_item.html', {'product': product})
+
+def confirm_order(request,pk):
+    ord=Order.objects.get(id=pk)
+    pro=Post.objects.get(id=pk)
+
+    item=Order_Item(order=ord,product=pro)
+    item.save()
+    return redirect("order_manage",pk)
+
+
+
+@csrf_exempt
+@login_required(login_url='signin')
+def Orderss(request,pk):
+    if request.method=='POST':
+        user=User.objects.get(id=request.user.id)
+        if Order.objects.filter(user=request.user).exists():
+            ship1 =Order.objects.get(user=request.user)
+            ship1.user=user
+            ship1.Full_name = request.POST['fullname']
+            ship1.Phone = request.POST['phone']
+            ship1.House = request.POST['house']
+            ship1.Area = request.POST['area']
+            ship1.Landmark = request.POST['landmark']
+            ship1.Town = request.POST['town']
+            ship1.State = request.POST['state']
+            ship1.Zip = request.POST['zip']
+            ship1.save()
+            return redirect('order_manage',pk)
+        else:
+            ship=Order()
+            ship.user=user
+            ship.Full_name = request.POST['fullname']
+            ship.Phone = request.POST['phone']
+            ship.House = request.POST['house']
+            ship.Area = request.POST['area']
+            ship.Landmark = request.POST['landmark']
+            ship.Town = request.POST['town']
+            ship.State = request.POST['state']
+            ship.Zip = request.POST['zip']
+            ship.save()
+            return redirect('order_manage',pk)        
         
 
 @csrf_exempt
 def place_order(request,id):
-    if request.method=='POST':
-        user=User.objects.get(id=request.user.id)
-
-        ship=Shipping_address.objects.get(id=id)
-        
-        neworder= Order()
-
-        neworder.user = user
-        neworder.shipping_address = ship
-
-        neworder.payment_mode = request.POST['payment']
-
-        cart = Cart.objects.filter(user=request.user)
-        crt_total_price = 0
-
-        for i in cart:
-            crt_total_price = crt_total_price +  i.product_qty * i.product.Product_Price 
-
-
-        neworder.total_price = crt_total_price
-
-        trackno = 'ananthu'+str(random.randint(1111111,9999999))
-
-        while Order.objects.filter(tracking_no=trackno ) is None:
-            trackno = 'ananthu'+str(random.randint(1111111,9999999))
-
-        neworder.tracking_no = trackno
-        neworder.save()
-        neworderitems = Cart.objects.filter(user=request.user)
-        for item in neworderitems:
-            Order_Item.objects.create(
-                user = request.user,
-                order = neworder,
-                product = item.product,
-                price  = item.product.Product_Price,
-                quanty = item.product_qty
-
-            )
-        Cart.objects.filter(user=request.user).delete()
-
-        messages.success(request,"Your order has been placed successfully")
-
+   
         return redirect ('my_order')
                
     
@@ -1524,7 +1583,7 @@ def place_order(request,id):
 def dashboard(request):
     crt=Cart.objects.filter(user=request.user)
     crt_count = crt.count()
-    ship = Shipping_address.objects.filter(user=request.user)
+    ship = Order.objects.filter(user=request.user)
 
     sub_total=0 
     grand_total = 0
@@ -1652,7 +1711,7 @@ def dash_address_book(request):
     for i in crt:
       sub_total =  sub_total + i.product_qty * i.product.Product_Price 
 
-    ship = Shipping_address.objects.filter(user=request.user)
+    ship = Order.objects.filter(user=request.user)
     address = ""
     reg = ""
     for i in ship:
@@ -1712,38 +1771,22 @@ def track_order(request):
 
 
 @csrf_exempt
-def my_order(request):
+def my_order(request,pk):
 
-    sub_total=0 
-    grand_total = 0
-    shipping =50
-    
 
-    grand_total =  sub_total + shipping
-    orderitem = Order_Item.objects.filter(user=request.user)
-    order_count = orderitem.count()
-    category = Category.objects.all()
-    context = {
-        'pro'  : product, 
-      
-        'sub_total' : sub_total,
-        'shipping'  : shipping,
-        'grand_total' : grand_total,
-        'category' : category,
-      
-        'order_count':order_count,
-        'orderitem' :orderitem,
-    }
-    return render(request,'dash-my-order.html',context) 
+    return render('my_order.html') 
 
 
 
 @csrf_exempt
-def manage_order(request,id):  
+def order_manage(request,id,uid):  
     crt=Cart.objects.filter()
     pos=Post.objects.get(id=id)
     crt_count = crt.count()
-    ship = Shipping_address.objects.filter(user=request.user)
+    ship=Order.objects.filter(user=request.user)
+    ord=Order_Item.objects.all()
+
+
 
     sub_total=0 
     grand_total = 0
@@ -1754,10 +1797,9 @@ def manage_order(request,id):
 
     grand_total =  sub_total + shipping
  
-    orderitem = Order_Item.objects.filter(user=request.user)
     shipadd = ""
     for i in ship:
-        shipadd = str(i.Full_name)+" , " + str(i.House)+" , "  + str(i.Area)+" , "+ str(i.Landmark)+" , " + str(i.Town)+" , " + str(i.State)+" , " + str(i.Zip)+" , " + str(i.Phone)
+        shipadd = str(i.user.username)+" , " + str(i.House)+" , "  + str(i.Area)+" , "+ str(i.Landmark)+" , " + str(i.Town)+" , " + str(i.State)+" , " + str(i.Zip)+" , " + str(i.Phone)
 
 
 
@@ -1768,9 +1810,9 @@ def manage_order(request,id):
         'shipping'  : shipping,
         'grand_total' : grand_total,
         'ship'    :   ship,
-        'orderitem'  : orderitem,
-        'shipadd'  : shipadd,
-        "pos":pos
+       "shipadd":shipadd,
+        "pos":pos,
+        "ord":ord
         
     }
     return render(request,'dash-manage-order.html',context) 
@@ -2043,8 +2085,6 @@ def search(request):
     template = 'search.html'
     query = request.GET.get('q')
 
-    
-
     # Search for pages
     pages = page.objects.filter(Q(pagename__icontains=query))
     page_count = pages.count()
@@ -2053,8 +2093,7 @@ def search(request):
     interests = intrest.objects.filter(Q(intrest_name__icontains=query))
     interest_count = interests.count()
 
-
-      # Search for users
+    # Search for users
     users = User.objects.filter(Q(username__icontains=query))
     user_count = users.count()
 
@@ -2062,15 +2101,15 @@ def search(request):
     posts = Post.objects.filter(Q(creater__username__icontains=query))
     post_count = posts.count()
 
-    # Display a message if no results were found
-    if user_count == 0 and post_count == 0:
-        message = 'No results found for "{}".'.format(query)
-    else:
-        message = 'Showing results for "{}".'.format(query)
- 
     # Combine search results and remove duplicates
-    results = list(itertools.chain(users, pages, interests,posts))
+    results = list(chain(users, pages, interests, posts))
     results = list(set(results))
+
+    # Display a message if no results were found
+    if not results:
+        message = "No results found for '{}'.".format(query)
+    else:
+        message = "Showing results for '{}'.".format(query)
 
     # Hide username field if no matching users found
     hide_username = user_count == 0
@@ -2081,11 +2120,15 @@ def search(request):
         'user_count': user_count,
         'posts': posts,
         'post_count': post_count,
+        'pages': pages,
+        'page_count': page_count,
+        'interests': interests,
+        'interest_count': interest_count,
         'message': message,
         'results': results,
         'hide_username': hide_username,
     }
-    return render(request, template, context) 
+    return render(request, template, context)
 
 
 
@@ -2680,7 +2723,7 @@ def user_posts(request):
     user_following_list = []
     feed = []
 
-    last_24_hours = timezone.now() - timezone.timedelta(hours=24)
+    # last_24_hours = timezone.now() - timezone.timedelta(hours=24)
    
     us=request.user
 
@@ -3526,7 +3569,7 @@ def review_reply(request,pk):
 
 def reply_delete(request,pk,id):
     rep=ReviewReply.objects.get(id=pk)
-    rep.delete()
+    rep.delete() 
     return redirect('review_reply',id)
 
 
@@ -3535,3 +3578,29 @@ def review_delete(request,nj,pk,id):
     rep=review.objects.get(id=nj)
     rep.delete()
     return redirect('product_detail',pk,id)
+
+
+def confirm_order(request,id,pk):
+
+    ordr=Order.objects.get(user=request.user)
+    post=Post.objects.get(id=pk)
+
+    item=Order_Item(order=ordr,product=post)
+    item.save()
+
+
+    return redirect('order_manage',id,pk)
+
+
+def download_histoy(request,id,pk):
+
+    
+
+        post=Post.objects.get(id=id)
+        user=User.objects.get(id=request.user.id)
+
+        dow=download(post=post,user=user)
+        dow.save()
+        return redirect("product_detail",id,pk)
+
+

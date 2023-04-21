@@ -303,10 +303,13 @@
                                 
                                     {% if i.Product_Price  == None %}
 <div>
+    <form action="{% url 'download_histoy' i.id i.creater.id %}"  class="d-flex input-group" method="GET" style="align-content: right;">
+
     <button onclick="downloadItem('{{ i.content_image.url }}')" type="submit" class="btn btn-success">
         <i class="fa-sharp fa-solid fa-circle-down"></i> Download
         
     </button>
+    </form>
 </div>
 {% else %}
 
@@ -327,13 +330,13 @@
                                             </div>
                                             <div class="u-s-m-b-15">
                                                 
-                                                   
                                                 <button type="submit" class="btn " style="background-color:rgb(255, 187, 0) ; color: #fff;">
                                                    
                                                     Add to Cart
 
                                                     
                                                 </button>
+                                                
 
                                                 <!-- <button style="background-color:rgba(255, 132, 0, 0.953) ; color: #fff; border:rgba(255, 132, 0, 0.953) ; border-radius: 10px; "  stclass="btn btn--e-brand-b-2" >
                                                      <a  style="color:#fff; border:rgba(255, 132, 0, 0.953) ;" href=" {% url 'checkout' %}"  class="btn btn--e-brand-b-2">Buy</a>

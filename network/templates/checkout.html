@@ -61,7 +61,7 @@
 
                                   {% if ship  %}  
                 {% for i in ship %}
-                                    <form class="checkout-f__delivery" action="{% url 'shipping_address' %}" method="POST">{% csrf_token %}
+                                    <form class="checkout-f__delivery" action="" method="POST">{% csrf_token %}
                                        
                                         <div class="u-s-m-b-30">
                                             <div class="u-s-m-b-15">
@@ -243,7 +243,7 @@
                                     </form>
                                     {% endfor %}
                                     {% else %}
-                                    <form class="checkout-f__delivery" action="{% url 'shipping_address' %}" method="POST">{% csrf_token %}
+                                    <form class="checkout-f__delivery" action="{% url 'Orderss' %}" method="POST">{% csrf_token %}
                                        
                                         <div class="u-s-m-b-30">
                                             <div class="u-s-m-b-15">
@@ -602,7 +602,7 @@
 
                                                       
                                                 </form>
-                                                <a href=""><button style="background-color: #17bf63; border: #17bf63;" class="btn btn--e-brand-b-2" type="submit">PLACE ORDER</button></a>
+                                                <a href=""><button style="background-color: #17bf63; border: #17bf63;" class="btn btn--e-brand-b-2" type="submit">CONFIRM ORDER</button></a>
                                             </div>
                                         </div>
                                     </div>

@@ -209,14 +209,9 @@
                                             <li>
                                                 <a href="{% url 'notification' user.id %}" style="color: antiquewhite;">
                                                     <span class="material-symbols-outlined">
-                                                        notifications
+                                                        payments
                                                         </span>
-                                                        Notifications   {% if fri is not None %}
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="31" height="28" fill="red"  class="bi bi-dot" viewBox="0 0 16 16">
-                                                            <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
-                                                          </svg>
-                                                        {% endif %}
-                                                        
+                                                      payment
                                                 </a>
                                             </li>
                                             <li>
@@ -530,6 +525,8 @@
                                             <div class="posts-view">
                                                 {% block profile %}
                                                 {% endblock %}
+
+
                                                 <div class="main-div-content">
                                                     {% if user.is_authenticated %}
                                                     {% for post in posts %}
@@ -802,14 +799,14 @@
                                                                         </div> 
                                                                         
                                                                       {% endif %}
-                                                                    <div class="save"  >
+                                                                    <!-- <div class="save"  >
                                                                         <a   style="border: none; padding-top: 3px;"> 
                                                                         </a>
                                                                         <div class="post-functions">
                                                                             <p> Bookmarks {{ post.num_wishlist }}</p>
                                                                         </div> 
                                                                        
-                                                                    </div> 
+                                                                    </div>  -->
                                                                         
                                                                         <div class="views ml-auto" >
                                                                             <div class="svg-span" style="padding-top: 8px;">
@@ -923,6 +920,7 @@
                             
                             
                                                 </div>
+
                                             </div>
                                         </div>
                                     </div>
