@@ -11,8 +11,11 @@ from unicodedata import category
 from venv import create
 from django.db import models
 from django.contrib.auth.models import User
+
 from .validators import file_size
 from django.contrib.contenttypes.fields import GenericRelation
+
+
 
 
 
@@ -375,3 +378,14 @@ class download(models.Model):
 class viewers(models.Model):
     post=models.ForeignKey(Post,related_name='viewed_post',on_delete=models.CASCADE)   
     user=models.ForeignKey(User,related_name='viewed_user',on_delete=models.CASCADE)
+
+
+class CurrencyConversion(models.Model):
+    from_currency = models.CharField(max_length=3)
+    to_currency = models.CharField(max_length=3)
+    exchange_rate = models.DecimalField(max_digits=10, decimal_places=5)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    converted_price = models.DecimalField(max_digits=10, decimal_places=2)
+    date_created = models.DateTimeField(default=timezone.now)
+
+

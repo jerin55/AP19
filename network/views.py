@@ -23,6 +23,12 @@ from django.db.models import Avg
 import datetime
 
 from datetime import datetime
+import requests
+
+
+from decimal import Decimal
+
+
 
 
 @csrf_exempt
@@ -2235,10 +2241,6 @@ def followers(request,id):
 #invite
 
 
-
-
-
-
 @csrf_exempt
 def intrst_followers(request,id):
     frd = intrest_followers.objects.filter()
@@ -3604,3 +3606,92 @@ def download_histoy(request,id,pk):
         return redirect("product_detail",id,pk)
 
 
+
+
+import requests
+
+def get_exchange_rate(base_currency, target_currency):
+    api_key = 'your_api_key_here'
+    url = f'https://openexchangerates.org/api/latest.json?app_id={api_key}&base={base_currency}&symbols={target_currency}'
+    response = requests.get(url)
+
+    # Check for API errors
+    if response.status_code != 200:
+        raise ValueError(f"API error: {response.content}")
+
+    data = response.json()
+
+    # Check for missing data
+    if 'rates' not in data:
+        raise ValueError(f"Unexpected API response: {data}")
+    
+    
+
+    return data['rates'][target_currency]
+
+
+
+
+
+
+def convert_currency(request):
+    if request.method == 'POST':
+        from_currency = request.POST.get('from_currency')
+        to_currency = request.POST.get('to_currency')
+        price = request.POST.get('price')
+
+        # Check for missing input
+        if not from_currency or not to_currency or not price:
+            error_msg = "Please provide all required input."
+            return render(request, 'convert_currency.html', {'error_msg': error_msg})
+
+        # Get the exchange rate and convert the price
+        try:
+            exchange_rate = get_exchange_rate(from_currency, to_currency)
+            converted_price = Decimal(price) * Decimal(exchange_rate)
+        except ValueError as e:
+            error_msg = str(e)
+            return render(request, 'convert_currency.html', {'error_msg': error_msg})
+
+        # Save the currency conversion
+        conversion = CurrencyConversion(
+            from_currency=from_currency,
+            to_currency=to_currency,
+            exchange_rate=exchange_rate,
+            price=price,
+            converted_price=converted_price
+        )
+        conversion.save()
+        print(converted_price)
+
+        # Display the conversion result
+        return render(request, 'conversion_result.html', {'conversion': conversion})
+
+    # If the request method is not POST, display the conversion form
+    return render(request, 'convert_currency.html')
+
+
+
+def buy_profile_bookmark(request,pk):
+    user = User.objects.get(id=pk)
+    wsh= Post.objects.filter(creater=user).annotate(num_wishlist=Count('postz')).order_by('-date_created')
+    intrests=intrest.objects.all().order_by("?")[:5]
+    crt=Cart.objects.filter(user=request.user)
+    crt_count = crt.count()
+    inv=invite_request.objects.filter(to_user=request.user)
+    suggestions = []
+    inv=invite_request.objects.filter(to_user=request.user).count()
+    noti=friend_request.objects.filter(to_user=request.user).count()
+
+    dd=inv + noti
+    search = request.GET.get('search')
+    if request.user.is_authenticated:
+        followings = friend_request.objects.filter(from_user=request.user).values_list('to_user',flat=True)
+        suggestions = User.objects.exclude(pk__in=followings).exclude(username=request.user.username).order_by("?")
+        if search:
+            suggestions = suggestions.filter(username__icontains=search)
+        suggestions = suggestions[:5]
+
+    return render(request,'buy_profile_bookmark.html',{'wsh':wsh,"suggestions":suggestions,"intrests":intrests,"dd":dd, 'crt' : crt,
+        'crt_count' : crt_count, 'search': search,
+          })

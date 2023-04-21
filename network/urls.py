@@ -165,6 +165,11 @@ urlpatterns = [
     path("download_histoy/<int:id>/<int:pk>",views.download_histoy, name="download_histoy"),
     path('post/<int:post_id>/wishlist-users/', views.wishlist_users, name='wishlist-users'),
 
+    path('buy_profile_bookmark/<int:pk>', views.buy_profile_bookmark, name='buy_profile_bookmark'),
+
+
+    path('convert_currency', views.convert_currency, name='convert_currency'),
+
 
 
 
