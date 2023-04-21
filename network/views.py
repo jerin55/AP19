@@ -3695,3 +3695,11 @@ def buy_profile_bookmark(request,pk):
     return render(request,'buy_profile_bookmark.html',{'wsh':wsh,"suggestions":suggestions,"intrests":intrests,"dd":dd, 'crt' : crt,
         'crt_count' : crt_count, 'search': search,
           })
+
+
+
+def view_post(request, post_id):
+    post = Post.objects.get(id=post_id)
+    post.viewers += 1
+    post.save()
+    # rest of the view code

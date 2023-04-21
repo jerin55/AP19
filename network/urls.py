@@ -169,6 +169,7 @@ urlpatterns = [
 
 
     path('convert_currency', views.convert_currency, name='convert_currency'),
+    path('view_post/<int:post_id>', views.view_post, name='view_post'),
 
 
 
