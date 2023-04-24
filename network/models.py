@@ -352,7 +352,7 @@ class pagefollow(models.Model):
     stat=models.TextField(max_length=255,blank=True)  
 
 
-
+# /Ananthakrishnan
 class invite_request(models.Model):
     from_user=models.ForeignKey(User,related_name='fr_inv',on_delete=models.CASCADE)
     to_user=models.ForeignKey(User,related_name='to_inv',on_delete=models.CASCADE)
@@ -361,13 +361,53 @@ class invite_request(models.Model):
     inv_statuses = (
        
         ('Pending','Pending'),
+        ('User_Pending','User_Pending'),
         ('Joined','Joined'),
         ('Rejected','Rejected'),
 
     )
     
     status =models.CharField(max_length=150,choices=inv_statuses,default='Pending')
+    date_created = models.DateTimeField(default=timezone.now)
 
+
+class Notifications(models.Model):
+    from_user=models.ForeignKey(User,related_name='fr_noti',on_delete=models.CASCADE,null=True,blank=True)
+    to_user=models.ForeignKey(User,related_name='to_noti',on_delete=models.CASCADE,null=True,blank=True)
+    pages=models.ForeignKey(page,related_name='pagz_noti',on_delete=models.CASCADE,null=True,blank=True)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE,related_name='post_noti',null=True,blank=True)
+
+    invite_request =models.ForeignKey(invite_request,on_delete=models.CASCADE,related_name='invite_request',null=True,blank=True)
+
+    friend_request =models.ForeignKey(friend_request,on_delete=models.CASCADE,related_name='friend_request',null=True,blank=True)
+
+
+
+    choice =(
+        ('Default','Default'),
+        ('User_Fllow','User_Fllow'),
+        ('User_Fllowing','User_Fllowing'),
+        ('User_Post_like','User_Post_like'),
+        ('User_Post_Reviwes','User_Post_Reviwes'),
+        ('Page_Invitions_To_User','Page_Invitions_To_User'),
+        ('User_Accept_Page_Invitions','User_Accept_Page_Invitions'),
+        ('User_Page_Join_Request','User_Page_Join_Request'),
+        ('Page_Accept_User_Invitions','Page_Accept_User_Invitions'),
+        ('Page_Post_like','User_Post_like'),
+        ('Page_Post_Reviwes','User_Post_Reviwes'),
+    )
+
+
+    type = models.CharField(max_length=150,choices=choice,default='Default')
+
+    date_created = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        ordering = ['-date_created']
+
+
+
+# Ananthakrishnan/
 
 class download(models.Model):
     post=models.ForeignKey(Post,related_name='downloading_post',on_delete=models.CASCADE)    

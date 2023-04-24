@@ -116,7 +116,7 @@ urlpatterns = [
     path('search/', views.search, name='search'),
     path('sent_friend_request/<int:userid>',views.sent_friend_request,name='sent_friend_request'),
     path('accept_friend_request/<int:requestid>',views.accept_friend_request,name='accept_friend_request'),
-    path('notification/<int:nid>',views.notification,name='notification'),
+    path('notification',views.notification,name='notification'),
     path('invitation_request/<int:nid>',views.invitation_request,name='invitation_request'),
     path('userfriends/<int:id>',views.userfriends,name='userfriends'),
     path('following/<int:id>',views.following,name='following'),
@@ -137,6 +137,10 @@ urlpatterns = [
     path('reviews/<int:userid>/<int:id>',views.reviews,name='reviews'),
     path('subtopic_createpost/<int:pk>',views.subtopic_createpost,name='subtopic_createpost'),
 
+
+
+    # /Ananthakrishnan
+
     path('Invite_Page/<int:pk>',views.Invite_Page,name='Invite_Page'),
 
     path('Leave_Join/<int:pk>',views.Leave_Join,name='Leave_Join'),
@@ -145,10 +149,32 @@ urlpatterns = [
 
     path('Invite_Removed/<int:pk>/<int:id>',views.Invite_Removed,name='Invite_Removed'),
 
-
     path('Join_friends/<int:id>',views.Join_friends,name='Join_friends'),
 
     path('Join_friends_reqest/<int:id>',views.Join_friends_reqest,name='Join_friends_reqest'),
+
+    path('User_page_invitation/<int:pk>/<int:id>',views.User_page_invitation,name='User_page_invitation'),
+
+    path('User_Invite_Joined/<int:pk>',views.User_Invite_Joined,name='User_Invite_Joined'),
+
+
+    path('Page_notifications/<int:id>',views.Page_notifications,name='Page_notifications'),
+
+    path('Accept_notifiction_User/<int:id>/<int:pk>',views.Accept_notifiction_User,name='Accept_notifiction_User'),
+
+    path('Delete_Notification_Invitations/<int:id>',views.Delete_Notification_Invitations,name='Delete_Notification_Invitations'),
+    
+    path('Page_Accept_Notification/<int:id>/<int:pk>',views.Page_Accept_Notification,name='Page_Accept_Notification'),
+
+    path('Page_Reject_user_join_Notification/<int:id>/<int:pk>',views.Page_Reject_user_join_Notification,name='Page_Reject_user_join_Notification'),
+
+
+    # Ananthakrishnan/
+
+
+
+
+
 
     path('review_reply/<int:pk>',views.review_reply,name='review_reply'),
 

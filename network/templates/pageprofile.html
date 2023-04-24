@@ -174,7 +174,7 @@
                                                 </a>
                                             </li>
                                             <li>
-                                                <a href="{% url 'notification' user.id %}">
+                                                <a href="{% url 'notification'  %}">
                                                     <span class="material-symbols-outlined">
                                                         notifications
                                                         </span>
@@ -321,7 +321,7 @@
                                 <h3><a href="" style="text-decoration: none;color: black;">{{user_followers}}</a></h3>
                                 {% endif %} -->
 
-                                <h3><a href="" style="text-decoration: none;color: black;">{{fncount}}</a></h3>
+                                <h3><a href="{% url 'Join_friends' pro.id %}" style="text-decoration: none;color: black;">{{fncount}}</a></h3>
                                 <p><a href="{% url 'Join_friends' pro.id %}" style="text-decoration: none;color: black;">Friends</a></p>
                             </div>
 
@@ -341,6 +341,7 @@
                         {% if user.username != pro.creater.username  %}                
                         <div>
 
+                              
                             {% if join == "Join" %}
                             <a class="btn" data-ripple=""><a class="btn btn btn-primary" href="{% url 'Invite_Page' pro.id %}"  style="background-color: #3f5ee9; border: #ffc0cb;">Join</a></a>
                             {% elif join == "Pending" %}
@@ -1066,6 +1067,15 @@
                                           {% for suggestion in search_results %}
                                               {% if not suggestion.is_staff %}
                                                   {% if suggestion.username != frd.to %}
+
+                                                   
+
+
+
+                                                  
+
+                                                        
+
                                                       <li>
                                                           <div class="feed-wrapper">
                                                               <div class="feed-img">
@@ -1078,10 +1088,15 @@
                                                                   <p>student</p>
                                                               </div>
                                                               <div>
-                                                                  <a href="{% url 'sent_friend_request' suggestion.id %}" type="submit" style="text-decoration: none; color: black;"><span class="material-symbols-outlined">add</span></a>
+                                                                  <a href="{% url 'User_page_invitation' pro.id %}" type="submit" style="text-decoration: none; color: black;"><span class="material-symbols-outlined">add</span></a>
                                                               </div> 
                                                           </div>
                                                       </li>
+                                                      
+
+
+
+
                                                   {% endif %}
                                               {% endif %}
                                           {% endfor %}
@@ -1098,49 +1113,66 @@
 
 
                     <ul style="margin-top: 20px;">
-                        {% for suggestion in suggestions %}
+
                         
-                        {% if not suggestion.is_staff %}
-                       
-                       {% if user.username != suggestion.username %}
+
+                            
+
+
+                            {% for suggestion in suggestions %}
+                            
+                            {% if not suggestion.is_staff %}
+
+                            
+
+
+                           
                      
-                        <li>
-                            <div class="suggestion-user">
-                                <div class="feed-img">
-                                    <a href="{% url 'profile' suggestion.id %}">
-                                        <div class="small-profilepic" style="background-image: url(/media/{{suggestion.profile_pic}})"></div>
-                                    </a>
-                                </div>
-                                <div class="user-details" style="align-items: center;">
-                                    <a href="{% url 'profile' suggestion.id %}">
-                                        <div id="user-name">
-                                            
-                                            <strong>
-                                                {{suggestion.username}} 
-                                            </strong>
-                                            <p>student</p>
-                                        </div>
-                                        <div class="grey"></div>
-                                    </a>
+                                        <li>
+                                            <div class="suggestion-user">
+                                                <div class="feed-img">
+                                                    <a href="{% url 'profile' suggestion.id %}">
+                                                        <div class="small-profilepic" style="background-image: url(/media/{{suggestion.profile_pic}})"></div>
+                                                    </a>
+                                                </div>
+                                                <div class="user-details" style="align-items: center;">
+                                                    <a href="{% url 'profile' suggestion.id %}">
+                                                        <div id="user-name">
+                                                            
+                                                            <strong>
+                                                                {{suggestion.username}}
+                                                            </strong>
+
+                                                            {% if suggestion.category != None  %}
+                                                            <p>{{suggestion.category}}</p>
+                                                            {% endif %}
+                                                        </div>
+                                                        <div class="grey"></div>
+                                                    </a>
+                                                    
+                                                </div>
+                                                <div>
                                     
-                                </div>
-                                <div>
+                                    
+                                    
+                                                    <a  href="{% url 'User_page_invitation' pro.id suggestion.id %}"> <button type="submit" class="nj"  onclick="sent_user(this,'{{suggestion.username}}','suggestion')" style="background-color: rgb(164, 187, 164);border-color: rgb(164, 187, 164) ;" >+</button></a>
+                                                    <!-- {% if frd.stat   %}
+                                                    <a>friends</a>
+                                                    {% else %}
+                                                    <a href="/sent_friend_request/{{ suggestion.id }}">sent</a> 
+                                                    {% endif %} -->
+                                                </div>
+                                            </div>
+                                        </li>
+                               
+                                    
+                          
+                                      
+                            {% endif %}
+                        
+                        {% endfor %}
+
                       
-                     
-                       
-                                    <a  href="{% url 'sent_invite_request' suggestion.id pro.id %}"> <button type="submit" class="nj"  onclick="sent_user(this,'{{suggestion.username}}','suggestion')" style="background-color: rgb(164, 187, 164);border-color: rgb(164, 187, 164) ;" >+</button></a>
-                                     <!-- {% if frd.stat   %}
-                                     <a>friends</a>
-                                     {% else %}
-                                    <a href="/sent_friend_request/{{ suggestion.id }}">sent</a> 
-                                     {% endif %} -->
-                                </div>
-                            </div>
-                        </li>
-                    {% endif %}
-                        {% endif %}
-                       
-                       {% endfor %}
                       
                     </ul>
                 </div>

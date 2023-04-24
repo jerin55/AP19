@@ -490,6 +490,9 @@ def profile(request, username):
     if request.user.is_authenticated:
         followings = friend_request.objects.filter(from_user=request.user).values_list('to_user', flat=True)
         suggestions = User.objects.exclude(pk__in=followings).exclude(username=request.user.username).order_by("?")[:6] 
+
+
+    
    
     return render(request, 'network/profile.html', {
         "username": user,
@@ -505,12 +508,13 @@ def profile(request, username):
         'crt_count' : crt_count,
         "invc":inv.count(),  
         "post_count":post_count,
-    "choose":choose,
+         "choose":choose,
         'user_followers': user_followers,
         'user_following': user_following,
         "topic_foll":topic_foll,
         "page_foll":page_foll,
         "dd":dd,
+        
        
     })
 
@@ -1003,29 +1007,27 @@ def pageindex(request):
 @csrf_exempt
 def pag(request,pk):
 
-    pag=page.objects.all()
-    pge=pagefollow.objects.all()
+    pag=page.objects.filter(creater=pk)
+    # pge=pagefollow.objects.all()
     all_pages=page.objects.order_by("?")[:4]
     intrests=intrest.objects.all().order_by("?")[:5]
-    inv=invite_request.objects.filter(to_user=request.user).count()
-    noti=friend_request.objects.filter(to_user=request.user).count()
-
-    dd=inv + noti
 
     crt=Cart.objects.filter(user=request.user)
     crt_count = crt.count()
     inv=invite_request.objects.filter(to_user=request.user)
+
+    page_joined = invite_request.objects.filter(from_user=request.user,status="Joined")
    
 
     context={
         "pag":pag,
-       "pge":pge,
-       "all_pages":all_pages,
-       "intrests":intrests,
+        # "pge":pge,
+        "all_pages":all_pages,
+        "intrests":intrests,
         'crt' : crt,
         'crt_count' : crt_count,
         "invc":inv.count(),
-        "dd":dd,
+        'page_joined':page_joined,
        }
    
     
@@ -1088,7 +1090,7 @@ def pageprofile(request,pageid):
     to=request.user.id
     frm=pageid
 
-    if pagefollow.objects.filter(from_user_id=to, to_page_id=frm,stat='following').first():
+    if pagefollow.objects.filter(from_user__id=to, to_page__id=frm,stat='following').first():
          button_text = 'Unfollow'
     else:  
         button_text = 'Follow'
@@ -1099,15 +1101,7 @@ def pageprofile(request,pageid):
         followings = Follower.objects.filter(followers=request.user).values_list('user', flat=True)
         suggestions = []
     search = request.GET.get('search')
-    if request.user.is_authenticated:
-        followings = friend_request.objects.filter(from_user=request.user).values_list('to_user',flat=True)
-        suggestions = User.objects.exclude(pk__in=followings).exclude(username=request.user.username).order_by("?")
-        if search:
-            suggestions = suggestions.filter(username__icontains=search)
-        suggestions = suggestions[:5]
-
-        if request.user in Follower.objects.get(user=pro.creater).followers.all():
-            follower = True
+    
 
     follower_count = Follower.objects.get(user=pro.creater).followers.all().count()
     following_count = Follower.objects.filter(followers=pro.creater).count()        
@@ -1118,7 +1112,8 @@ def pageprofile(request,pageid):
     pge = page.objects.get(id=frm)
 
     to_us = pge.creater
-
+    
+    join ='Join'
 
     if invite_request.objects.filter(from_user=us,to_user=to_us):
 
@@ -1131,13 +1126,58 @@ def pageprofile(request,pageid):
                 join = 'Pending'
             elif i.status == "Joined": 
                 join = 'Joined'   
-
+  
+    
+    
         
-    else:  
-        join = 'Join'
-    friends_list=""
+
+    friends_list=[]
     if invite_request.objects.filter(to_user=to_us,status="Joined"):
         friends_list = invite_request.objects.filter(to_user=to_us,status="Joined")
+        
+        
+        
+        
+    
+
+        
+
+    if request.user.is_authenticated:
+        # followings = friend_request.objects.filter(from_user=request.user)
+
+        if invite_request.objects.filter(to_user=to_us, status__in=["Joined","User_Pending"]):
+            frnd_list = invite_request.objects.filter(to_user=to_us, status__in=["Joined","User_Pending"])
+
+        
+        
+            join_friends=[]
+           
+            for i in frnd_list :
+
+
+                join_friends.append(User.objects.filter(id=i.from_user.id))
+
+            combined_queryset = join_friends[0]
+            for queryset in join_friends[1:]:
+                combined_queryset |= queryset
+
+        
+
+
+            suggestions = User.objects.exclude(pk__in=combined_queryset).exclude(username=request.user.username).order_by("?")
+
+        
+                
+
+
+        if search:
+            suggestions = suggestions.filter(username__icontains=search)
+        suggestions = suggestions[:5]
+
+        if request.user in Follower.objects.get(user=pro.creater).followers.all():
+            follower = True    
+
+        
 
     
     context = {
@@ -1157,7 +1197,8 @@ def pageprofile(request,pageid):
         "invc":inv.count(),  
         "choose":choose,
         'join':join,
-        'fncount':len(friends_list)
+        'fncount':len(friends_list),
+        'friends_list':friends_list,
         
     }
 
@@ -2197,6 +2238,27 @@ def sent_friend_request(request,userid):
     to_user=User.objects.get(id=userid)
     frequest =friend_request(from_user=from_user,to_user=to_user,stat="following")
     frequest.save()
+
+
+    friend_request_id = friend_request.objects.get(id=frequest.id)
+
+    follow_Notification = Notifications()
+
+    follow_Notification.from_user = to_user
+    follow_Notification.to_user = request.user
+    follow_Notification.friend_request = friend_request_id
+    follow_Notification.type = "User_Fllowing"
+
+    follow_Notification.save()
+
+
+
+
+
+
+
+
+
     return redirect("profile",userid)
     
     
@@ -2304,24 +2366,52 @@ def page_unfollow(request,pk):
 
 
 @csrf_exempt
-def notification(request,nid):
-    fr=friend_request.objects.all()
-    inv=invite_request.objects.all()
-    pag=page.objects.all()
-    foll=Follower.objects.all()
-    foll_noti=friend_request.objects.all().order_by("date_created")
+def notification(request):
+
     intrests=intrest.objects.all().order_by("?")[:5]
-
-    crt=Cart.objects.filter(user=request.user)
-    crt_count = crt.count()
-
     suggestions = []
     if request.user.is_authenticated:
         followings = friend_request.objects.filter(from_user=request.user).values_list('to_user', flat=True)
         suggestions = User.objects.exclude(pk__in=followings).exclude(username=request.user.username).order_by("?")[:6]
+
+
+
+    # fr=friend_request.objects.all()
+    # inv=invite_request.objects.all()
+    # pag=page.objects.all()
+    # foll=Follower.objects.all()
+
+    foll_noti=friend_request.objects.filter(to_user=request.user).order_by("date_created")
+
+    
+    
+    
+
+    # crt=Cart.objects.filter(user=request.user)
+    # crt_count = crt.count()
+
+    Notification = Notifications.objects.filter(from_user=request.user)
+
+    
+
    
-    return render(request,"notification.html",{'fr':fr,"inv":inv, 'crt' : crt,
-        'crt_count' : crt_count,'pag':pag,"foll":foll,"suggestions":suggestions,"intrests":intrests,"foll_noti":foll_noti,"foll_noti_c":foll_noti.count()})  
+
+    context={
+
+            #  'fr':fr,
+            #  "inv":inv,
+            #  'crt' : crt,
+            #  'crt_count' : crt_count,
+            #  'pag':pag,
+            #  "foll":foll,
+             "suggestions":suggestions,
+             "intrests":intrests,
+            #  "foll_noti":foll_noti,
+            #  "foll_noti_c":foll_noti.count()
+            'Notification':Notification,
+        }
+   
+    return render(request,"notification.html",context)  
 
 
 @csrf_exempt
@@ -3453,6 +3543,8 @@ def subtopic_createpost(request,pk):
     }
     return render(request,"subtopic_createpost.html",context)
 
+
+# /Ananthakrishnan
 @csrf_exempt
 def Invite_Page(request,pk):
     user = request.user
@@ -3474,11 +3566,24 @@ def Invite_Page(request,pk):
 
     add_invite.save()
 
+    inv_id = invite_request.objects.get(id=add_invite.id)
+
+
+    Notifi =Notifications()
+
+    Notifi.from_user = user
+    Notifi.to_user = to_user
+    Notifi.pages = pge
+    Notifi.type = "User_Page_Join_Request"
+    Notifi.invite_request = inv_id
+
+    Notifi.save()
+
 
 
     return redirect('pageprofile',pk)
 
-@csrf_exempt
+
 def Leave_Join(request,pk):
     user = request.user
 
@@ -3492,7 +3597,7 @@ def Leave_Join(request,pk):
 
     return redirect('pageprofile',pk)
 
-@csrf_exempt
+
 def Invite_Joined(request,pk,id):
     
 
@@ -3512,8 +3617,11 @@ def Invite_Removed(request,pk,id):
 
     inv.delete()
 
+    
 
     return redirect('pageprofile',id)
+
+
 
 
 
@@ -3550,7 +3658,7 @@ def Join_friends_reqest(request,id):
     if invite_request.objects.filter(to_user=to_us,status="Pending"):
         join_list = invite_request.objects.filter(to_user=to_us,status="Pending")
 
-   
+    
     context = {
         'join_list':join_list,
         'pro':pge,
@@ -3559,6 +3667,146 @@ def Join_friends_reqest(request,id):
     
     
     return render(request,'join_request_friends.html',context)
+
+
+def User_page_invitation(request,pk,id):
+
+
+    pge = page.objects.get(id=pk)
+
+    to_user = pge.creater
+
+
+    user_id = User.objects.get(id=id)
+
+    add_invite = invite_request()
+
+    add_invite.from_user = user_id
+    add_invite.to_user = to_user
+    add_invite.pages = pge
+
+    add_invite.status = "User_Pending"
+    add_invite.save()
+
+    inv_id=invite_request.objects.get(id=add_invite.id)
+    
+
+
+
+    Notifi =Notifications()
+
+    Notifi.from_user = user_id
+    Notifi.to_user = to_user
+    Notifi.pages = pge
+    Notifi.type = "Page_Invitions_To_User"
+    Notifi.invite_request = inv_id
+
+    Notifi.save()
+
+    
+
+
+
+
+    return redirect('pageprofile',pk)
+
+
+
+def User_Invite_Joined(request,pk):
+    
+
+    inv = invite_request.objects.get(id=pk)
+
+    inv.status = "Joined"
+
+    inv.save()
+
+
+
+    nid=request.user
+
+    return redirect('invitation_request',nid.id)
+
+
+def Page_notifications(request,id):
+
+    # pag_noti = invite_request.objects.filter()
+
+    Notification =  Notifications.objects.filter(to_user=request.user)
+
+    context = {
+        'Notification':Notification,
+        'page_id':id,
+    }
+
+    return render(request,'Mypage_notifications.html',context)
+
+
+
+def Accept_notifiction_User(request,id,pk):
+
+    inv = invite_request.objects.get(id=id)
+
+    inv.status = "Joined"
+
+    inv.save()
+
+    noti = Notifications.objects.get(id=pk)
+
+    noti.type="User_Accept_Page_Invitions"
+    
+
+    noti.date_created=timezone.now()
+
+
+    noti.save()
+
+
+    return redirect(notification)
+
+
+
+def Delete_Notification_Invitations(request,id):
+
+    inv = invite_request.objects.get(id=id)
+
+    inv.delete()
+
+
+    return redirect(notification)
+
+
+def Page_Accept_Notification(request,id,pk):
+
+    inv = invite_request.objects.get(id=id)
+
+    inv.status = "Joined"
+
+    inv.save()
+
+    noti = Notifications.objects.get(id=pk)
+
+    noti.type="Page_Accept_User_Invitions"
+    
+
+    noti.date_created=timezone.now()
+
+
+    noti.save()
+
+    return redirect(Page_notifications,noti.pages.id)
+
+
+def Page_Reject_user_join_Notification(request,id,pk):
+
+    inv = invite_request.objects.get(id=id)
+
+    inv.delete()
+
+    return redirect(Page_notifications,pk)
+
+
+# Ananthakrishnan/
 
 
 def review_reply(request,pk):

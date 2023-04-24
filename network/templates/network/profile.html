@@ -3,6 +3,7 @@
 
 <head>
     {% load static %}
+    {% load temptage %}
     <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -102,7 +103,7 @@
          
                     <li style="list-style: none; padding-left: 15px;">
                         <div class="notification">
-                       <a href="{% url 'notification' user.id %}"><span class="material-symbols-outlined">
+                       <a href="{% url 'notification'  %}"><span class="material-symbols-outlined">
                         notifications
                     </span></a> 
                         
@@ -1214,66 +1215,42 @@
                           </div>
                         </form>
                       </div>             -->
-                              <h5>Suggestions</h5>
+                              <h5> Intrested Topics</h5>
                           
-                              {% if search %}
-                                  
-                                  <ul >
-                                      {% for suggestion in search_results %}
-                                          {% if not suggestion.is_staff %}
-                                              {% if suggestion.username != frd.to %}
-                                                  <li>
-                                                      <div class="feed-wrapper">
-                                                          <div class="feed-img">
-                                                              <a href="{% url 'profile' suggestion.id %}">
-                                                                  <div class="feed-profilepic" style="background-image: url(/media/{{suggestion.profile_pic}})"></div>
-                                                              </a>
-                                                          </div>
-                                                          <div style="margin-left: 25px;" class="feed-info mr-auto">
-                                                              <a style="text-decoration: none; color: black;" href="{% url 'profile' suggestion.id %}"><h6>{{suggestion.username}}</h6></a>
-                                                              <p>student</p>
-                                                          </div>
-                                                          <div>
-                                                              <a href="{% url 'sent_friend_request' suggestion.id %}" type="submit" style="text-decoration: none; color: black;"><span class="material-symbols-outlined">add</span></a>
-                                                          </div> 
-                                                      </div>
-                                                  </li>
-                                              {% endif %}
-                                          {% endif %}
-                                      {% endfor %}
-                                  </ul>
-                              {% endif %}
                               
                   
                           <ul style="margin-top: 20px;">
-                    {% for suggestion in suggestions %}
-                  
-                    {% if not suggestion.is_staff %}
-                    {% if  suggestion.username != frd.to %}
-                  
-                        <li>
-                            <div class="feed-wrapper">
-                                <div class="feed-img">
-                                    <a href="{% url 'profile' suggestion.id %}">
-                                        <div class="feed-profilepic" style="background-image: url(/media/{{suggestion.profile_pic}})"></div>
-                                    </a>
-                                </div>
-                                <div style="margin-left: 25px;" class="feed-info mr-auto">
-                                    <a style="text-decoration: none; color: black;" href="{% url 'profile' suggestion.id %}"> <h6>{{suggestion.username}}</h6></a>
-                                    <p>{{ suggestion.category }}</p>
-                                </div>
-                                <div>
-                                   
-                                        <a  href="{% url 'sent_friend_request' suggestion.id   %}" type="submit" style="text-decoration: none; color: black;"><span class="material-symbols-outlined" >add</span></a>
-                                </div> 
-                                <!-- <span class="material-symbols-outlined" >
-                                    add
-                                </span> -->
-                            </div>
-                        </li>
-                        {% endif %}
-                        {% endif %}
-                       {% endfor %}
+                            {% for choose in choose %}
+                            {% if request.user == choose.following_user  %}
+                            
+                                  <li>
+                                      <div class="feed-wrapper">
+                                          <!-- <div class="feed-img">
+                                              <a href="{% url 'topic_createpost' choose.topic.id %}">
+                                                  <div class="feed-profilepic" style="background-image: url(/media/{{suggestion.profile_pic}})"></div>
+                                              </a>
+                                          </div> -->
+                                          <div style="margin-left: 25px;" class="feed-info mr-auto">
+                                              <a style="text-decoration: none; color: black;" href="{% url 'topicpage' choose.topic.id %}"><h6>{{choose.topic.intrest_name}}</h6></a>
+                                              <!-- <p>{{choose.topic.id | counts }}</p> -->
+                                          </div>
+                                          <div>
+                                             
+                                                  <h6><a href=" {% url 'topicpage' choose.topic.id %}" style="text-decoration: none; color: black;">
+                                                    {{choose.topic.id|counts2:user.id}} giz 
+
+                                                    
+                                                </a></h6>
+                                          </div> 
+                                          <!-- <span class="material-symbols-outlined" >
+                                              add
+                                          </span> -->
+                                      </div>
+                                  </li>   
+                                
+                                  {% endif %}
+                                 {% endfor %}
+
                     </ul>
                 </div>
 

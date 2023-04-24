@@ -8,7 +8,7 @@
 <b><span class="star"><small style="color: rgb(52, 129, 201);">{{message}}</small></span></b>
 {% endfor %}
 <div>
-<a href="{% url 'notification' user.id %}" style="text-decoration: none;color: rgb(66, 170, 230);">+notifications</a>
+<a href="{% url 'notification' %}" style="text-decoration: none;color: rgb(66, 170, 230);">+notifications</a>
 <a href="{% url 'invitation_request' user.id %}" style="margin-left: 320px;text-decoration: none;color: black;">+invitation request</a>
 </div><br><br>
 
