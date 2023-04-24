@@ -128,7 +128,7 @@ class Post(models.Model):
     comment_count = models.IntegerField(default=0)
     posts_type = models.CharField(max_length=255,null=True)
     
-    views=models.IntegerField(default=True)
+   
     title=models.CharField(max_length=255,default=True)
     categories=models.CharField(max_length=255,default=True)
     tages_n=models.CharField(max_length=255,default=True)
@@ -136,6 +136,8 @@ class Post(models.Model):
     Product_Price = models.IntegerField(null=True,blank=True)
 
     Offer_toggle = models.CharField(max_length=100,default='Normal')
+    
+    views_count =models.IntegerField(null=True,blank=True,default=0)
 
 
     Offer_price=models.IntegerField(null=True,blank=True)
@@ -161,6 +163,20 @@ class Post(models.Model):
 
     def img_url(self):
         return self.content_image.url
+
+
+
+
+
+class post_viewers(models.Model):
+    post=models.ForeignKey(Post,on_delete=models.CASCADE, related_name='post_viewed')
+    viewer=models.ForeignKey(User,on_delete=models.CASCADE, related_name='user_viewed')
+
+
+
+
+
+
 
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')

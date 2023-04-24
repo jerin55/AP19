@@ -533,6 +533,8 @@ def buyprofile(request, username):
     user = User.objects.get(id=username)
     # all_posts = Post.objects.filter(creater=user).annotate(num_wishlist=Count('postz')).order_by('-date_created')
 
+    orders=Order_Item.objects.all()
+
 
     user_following_list = []
     feed = []
@@ -629,7 +631,8 @@ def buyprofile(request, username):
         'user_followers': user_followers,
         'user_following': user_following,
         "topic_foll":topic_foll,
-        "page_foll":page_foll
+        "page_foll":page_foll,
+        "orders":orders
        
     })
 
@@ -1341,6 +1344,10 @@ def product_detail(request,id,userid):
     inv=invite_request.objects.filter(to_user=request.user).count()
     noti=friend_request.objects.filter(to_user=request.user).count()
 
+
+    
+    
+
     dd=inv + noti
 
     to=request.user.id
@@ -1365,6 +1372,26 @@ def product_detail(request,id,userid):
     post = Post.objects.get(id=id)
     post.average_rating = avav
     post.save()
+
+
+    # pos = Post.objects.get(id=id)
+    # view = request.user
+
+    # post_view = post_viewers.objects.get(post=pos, viewer=view)
+    # post_view.save()
+
+
+
+
+    post_view=Post.objects.get(id=id)
+    if post_view.views_count is None:
+         post_view.views_count = 1
+    else:
+         post_view.views_count += 1
+    post_view.save()
+
+
+    
     
 
 

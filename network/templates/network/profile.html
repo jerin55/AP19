@@ -189,7 +189,7 @@
                                             </li>
 
                                             {% if user.username == username.username %}
-                                            <li>
+                                            <!-- <li>
                                                 <a href=""  style="color:antiquewhite;">
                                                     <span class="material-symbols-outlined">
                                                         inactive_order
@@ -197,7 +197,7 @@
                                                         Orders
                                                 </a>
                                                
-                                            </li>
+                                            </li> -->
                                             {% endif %}
                                            
 <!--                                           
@@ -333,6 +333,7 @@
                     <ul class="viewed-list">
                         <li>first name : <span><h6 >{{ user.first_name }}</h6></span></li>
                         <li>last name : <span><h6 >{{ user.last_name }}</h6></span></li>
+                        <li>gender : <span><h6 >{{ user.genter }}</h6></span></li>
                         <li>country : <span><h6 >{{ user.state }}</h6></span></li>
                         <li>email : <span><h6 >{{ user.email }}</h6></span></li>
                         <li>contact : <span><h6 >{{ user.mobile }}</h6></span></li>
@@ -836,7 +837,11 @@
                                                                                 
                                                                             </div>
                                                                             <div class="post-functions">
-                                                                                <div class="likes_count">{{post.likers.count}} </div> <p>&nbsp; views</p>
+                                                                                {%if post.views_count == None %}
+                                                                                <div class="likes_count">0 </div> <p>&nbsp; views</p>
+                                                                                {% else %}
+                                                                                <div class="likes_count">{{post.views_count}} </div> <p>&nbsp; views</p>
+                                                                                {% endif %}
                                                                             </div> 
                                                                         </div>
                                                                         
@@ -963,7 +968,7 @@
                                     <div class="order-flex-wrapper">
                                         <div class="order-item-img">
                                             <div class="img-order-lg">
-                                                <img src="" alt="">
+                                                <img src="/media/{{ orders.product.content_image }}" alt="">
                                                 
                                     
                                             </div>
@@ -998,7 +1003,7 @@
                                     <div class="order-flex-wrapper">
                                         <div class="order-item-img">
                                             <div class="img-order-lg">
-                                                <img src="" alt="">
+                                                <img src="/media/{{ orders.product.content_image }}" alt="">
                                                 
                                     
                                             </div>

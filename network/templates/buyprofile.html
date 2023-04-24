@@ -186,7 +186,7 @@
                                                
                                             </li>
 
-
+<!-- 
                                             <li>
                                                 <a href=""  style="color:antiquewhite;">
                                                     <span class="material-symbols-outlined">
@@ -195,7 +195,7 @@
                                                         orders
                                                 </a>
                                                
-                                            </li>
+                                            </li> -->
                                            
                                           
                                             <li>
@@ -433,12 +433,12 @@
                         </li>
                         
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="resources-tab" data-bs-toggle="tab"
-                                data-bs-target="#resources-tab-pane" type="button" role="tab"
-                                aria-controls="resources-tab-pane" aria-selected="false"><span
+                            <button class="nav-link" id="purchase-tab" data-bs-toggle="tab"
+                                data-bs-target="#purchase-tab-pane" type="button" role="tab"
+                                aria-controls="purchase-tab-pane" aria-selected="false"><span
                                     class="material-symbols-outlined">
                                     attach_file
-                                </span> Purchases</button>
+                                </span> Orders</button>
                         </li>
                         <!-- <li class="nav-item" role="presentation">
                           
@@ -1072,6 +1072,94 @@
                         {% endfor %}
 
                     </div>
+
+                    
+                    <div class="tab-pane fade show active" id="purchase-tab-pane" role="tabpanel"
+                    aria-labelledby="purchase-tab" tabindex="0">
+                    <ul class=" pages-list">
+                        {% for orders in orders %}
+                        {% if orders.order.user == request.user %}
+                       
+                        
+                            <li class="bg-white radius-20 pt-3 pb-3">
+                                <div class="order-flex-wrapper">
+                                    <div class="order-item-img">
+                                        <div class="img-order-lg">
+                                            <img src="/media/{{ orders.product.content_image }}" alt="">
+                                            
+                                
+                                        </div>
+                                    </div>
+                                   
+                                    <div class="order-detail-block">
+                                        
+                                        <h5 class="resource-title">{{ orders.product.content_text }}  <span> {{ orders.product.date_created }}</span></h5>
+                                        <h6>{{ orders.product.categories }}</h6>
+                                        <p>{{ orders.product.content_text }}</p>
+                                   <div class="action-btn">
+                                    <button class="btn btn-tranparent">
+                                        Download Invoice 
+                                    </button>
+                                    <button class="btn btn-tranparent text-blue">
+                                        <a href="{% url 'product_detail' orders.product.id  orders.order.user.id %}" style="text-decoration: none;color: black;"> View File </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        {% if orders.product.status == 'nsale' %}
+                                        Type :&nbsp;<a class="mr - 1 badge badge-danger">  Free </a>
+                                        {% else %}
+                                        Type :&nbsp;<a class="mr - 1 badge badge-danger"> Paid </a>
+
+                                        {% endif %}
+                                      
+                                    </button>
+                                   </div>
+                                    </div>
+                                   
+                                </div>   
+                            </li>
+                            {% else %}
+                            <li class="bg-white radius-20 pt-3 pb-3">
+                                <div class="order-flex-wrapper">
+                                    <div class="order-item-img">
+                                        <div class="img-order-lg">
+                                            <img src="/media/{{ orders.product.content_image }}" alt="">
+                                            
+                                
+                                        </div>
+                                    </div>
+                                   
+                                    <div class="order-detail-block">
+                                        
+                                        <h5 class="resource-title">{{ orders.product.content_text }}  <span>{{ orders.date_created }}</span></h5>
+                                        <h6>{{ orders.product.categories }}</h6>
+                                        <p>{{ orders.product.content_text }}</p>
+                                   <div class="action-btn">
+                                    <button class="btn btn-tranparent">
+                                        Download Invoice 
+                                    </button>
+                                    <button class="btn btn-tranparent text-blue">
+                                        <a href="" style="text-decoration: none;color: black;"> View File </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        {% if orders.product.status == 'nsale' %}
+                                        Type :&nbsp;<a class="mr - 1 badge badge-danger">  Free </a>
+                                        {% else %}
+                                        Type :&nbsp;<a class="mr - 1 badge badge-danger"> Paid </a>
+
+                                        {% endif %}
+                                      
+                                    </button>
+                                   </div>
+                                    </div>
+                                   
+                                </div>   
+                            </li>
+                            {% endif %}
+                            {% endfor %}
+                      
+                        </ul>
+                
+
+                </div>
+
+
+
                     <div class="tab-pane fade" id="resources-tab-pane-page" role="tabpanel"
                         aria-labelledby="resources-tab" tabindex="0">
                         
