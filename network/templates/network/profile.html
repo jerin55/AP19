@@ -444,7 +444,7 @@
                                 aria-controls="resources-tab-pane" aria-selected="false"><span
                                     class="material-symbols-outlined">
                                     attach_file
-                                </span> Purchases</button>
+                                </span> Orders</button>
                         </li>
                         {% endif %}
                         <!-- <li class="nav-item" role="presentation">
@@ -557,11 +557,16 @@
                                         </div>
                                         <div class="post-info">
                                             {% if post.posts_type == "page_post" %}
-                                          <a style="text-decoration: none; color: black; "href="{% url 'pageprofile' post.page_id.id %}"> <h6>{{post.page_id.pagename}} &nbsp;&nbsp;<span class="low-opacity">{{post.date_created | date:"P M d Y"}}</span></h6></a> 
-                                            <p>academy</p>
+                                          <a style="text-decoration: none; color: black; " > <h6><a href="{% url 'profile' user.id %}">{{post.creater.username}} </a> - <a href="{% url 'pageprofile' post.page_id.id %}">{{post.page_id.pagename}} &nbsp;&nbsp;<span class="low-opacity">{{post.date_created | date:"P M d Y"}}</span></h6></a> 
+                                          <p>academy</p></a>
+                                            {% elif post.posts_type == "user_post" %}
+                                            <a style="text-decoration: none; color: black; " > <h6><a href="{% url 'profile' post.creater.id %}">{{post.creater.username}} </a> &nbsp;&nbsp;<span class="low-opacity">{{post.date_created | date:"P M d Y"}}</span></h6></a> 
+                                            <p>student</p>
+                                            {% elif post.posts_type == "intrest_post" %}
+                                            <h6><a href="{% url 'profile' post.creater.id %}" style="color: black;">{{post.creater.username}} </a>/<a href="{% url 'topicpage' post.intr_id.id %}" >{{ post.intr_id.intrest_name }}</a>   &nbsp;&nbsp;<span class="low-opacity">{{post.date_created | date:"P M d Y"}}</span></h6>
+                            
                                             {% else %}
-                                            <a style="text-decoration: none; color: black; "href="{% url 'profile' user.id %}"> <h6>{{post.creater.username}} &nbsp;&nbsp;<span class="low-opacity">{{post.date_created | date:"P M d Y"}}</span></h6></a> 
-                                            <p>{{ post.creater.category }}</p>
+                                            <h6><a href="" style="color: black;">{{post.creater.username}} </a>/<a href="{% url 'topicpage' post.lev2_id.parent_name.id %}" >{{ post.lev2_id.parent_name.intrest_name }}</a>/<a href="{% url 'subtopicpage' post.lev2_id.id %}" style="color: black;" >{{ post.lev2_id.intrest_name }}</a>  &nbsp;&nbsp;<span class="low-opacity">{{post.date_created | date:"P M d Y"}}</span></h6>
                                             {% endif %}
                             
                                         </div>
@@ -948,7 +953,91 @@
                         </div>
                         <div class="tab-pane fade" id="resources-tab-pane" role="tabpanel" aria-labelledby="resources-tab"
                         tabindex="0">
-                              <h6>...</h6></div>
+                              
+                         <ul class=" pages-list">
+                            {% for orders in orders %}
+                            {% if orders.order.user == request.user %}
+                           
+                            
+                                <li class="bg-white radius-20 pt-3 pb-3">
+                                    <div class="order-flex-wrapper">
+                                        <div class="order-item-img">
+                                            <div class="img-order-lg">
+                                                <img src="" alt="">
+                                                
+                                    
+                                            </div>
+                                        </div>
+                                       
+                                        <div class="order-detail-block">
+                                            
+                                            <h5 class="resource-title">{{ orders.product.content_text }}  <span> {{ orders.product.date_created }}</span></h5>
+                                            <h6>{{ orders.product.categories }}</h6>
+                                            <p>{{ orders.product.content_text }}</p>
+                                       <div class="action-btn">
+                                        <button class="btn btn-tranparent">
+                                            Download Invoice 
+                                        </button>
+                                        <button class="btn btn-tranparent text-blue">
+                                            <a href="{% url 'product_detail' orders.product.id  orders.order.user.id %}" style="text-decoration: none;color: black;"> View File </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            {% if orders.product.status == 'nsale' %}
+                                            Type :&nbsp;<a class="mr - 1 badge badge-danger">  Free </a>
+                                            {% else %}
+                                            Type :&nbsp;<a class="mr - 1 badge badge-danger"> Paid </a>
+
+                                            {% endif %}
+                                          
+                                        </button>
+                                       </div>
+                                        </div>
+                                       
+                                    </div>   
+                                </li>
+                                {% else %}
+                                <li class="bg-white radius-20 pt-3 pb-3">
+                                    <div class="order-flex-wrapper">
+                                        <div class="order-item-img">
+                                            <div class="img-order-lg">
+                                                <img src="" alt="">
+                                                
+                                    
+                                            </div>
+                                        </div>
+                                       
+                                        <div class="order-detail-block">
+                                            
+                                            <h5 class="resource-title">{{ orders.product.content_text }}  <span>{{ orders.date_created }}</span></h5>
+                                            <h6>{{ orders.product.categories }}</h6>
+                                            <p>{{ orders.product.content_text }}</p>
+                                       <div class="action-btn">
+                                        <button class="btn btn-tranparent">
+                                            Download Invoice 
+                                        </button>
+                                        <button class="btn btn-tranparent text-blue">
+                                            <a href="" style="text-decoration: none;color: black;"> View File </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            {% if orders.product.status == 'nsale' %}
+                                            Type :&nbsp;<a class="mr - 1 badge badge-danger">  Free </a>
+                                            {% else %}
+                                            Type :&nbsp;<a class="mr - 1 badge badge-danger"> Paid </a>
+
+                                            {% endif %}
+                                          
+                                        </button>
+                                       </div>
+                                        </div>
+                                       
+                                    </div>   
+                                </li>
+                                {% endif %}
+                                {% endfor %}
+                          
+                            </ul>
+                    
+                    
+                    </div>
+
+
+
                         <div class="tab-pane fade" id="about-tab-pane" role="tabpanel" aria-labelledby="about-tab"
                         tabindex="0">
                         <ul class=" pages-list cont-flex">
@@ -1255,36 +1344,38 @@
                 </div>
 
                 <div class="feed-list bg-white">
-                    <h4 style="margin-left: 20px; "> Suggested Topics<span class="material-symbols-outlined">
+                    <h4 style="margin-left: 20px; "> Suggessions<span class="material-symbols-outlined">
                         
                         </span></h4><br>
             
                     <ul>
-                        {% for intrests in intrests %}
-                      
-                      
+                        {% for suggestion in suggestions %}
+                  
+                        {% if not suggestion.is_staff %}
+                        {% if  suggestion.username != frd.to %}
                       
                             <li>
                                 <div class="feed-wrapper">
-                                   
+                                    <div class="feed-img">
+                                        <a href="{% url 'profile' suggestion.id %}">
+                                            <div class="feed-profilepic" style="background-image: url(/media/{{suggestion.profile_pic}})"></div>
+                                        </a>
+                                    </div>
                                     <div style="margin-left: 25px;" class="feed-info mr-auto">
-                                        <a style="text-decoration:none; color: black;" href="{% url 'topicpage' intrests.id %}">
-                                        <h6 style="text-decoration:none; color: black;" >{{intrests.intrest_name}}</h6>
-                                    </a>
-                                        <p></p>
+                                        <a style="text-decoration: none; color: black;" href="{% url 'profile' suggestion.id %}"> <h6>{{suggestion.username}}</h6></a>
+                                        <p>{{ suggestion.category }}</p>
                                     </div>
                                     <div>
                                        
-                                            <a  href="" type="submit" style="text-decoration: none; color: black;"><span class="material-symbols-outlined">
-                                                add
-                                            </span></a>
+                                            <a  href="{% url 'sent_friend_request' suggestion.id   %}" type="submit" style="text-decoration: none; color: black;"><span class="material-symbols-outlined" >add</span></a>
                                     </div> 
                                     <!-- <span class="material-symbols-outlined" >
                                         add
                                     </span> -->
                                 </div>
                             </li>
-                            
+                            {% endif %}
+                            {% endif %}
                            {% endfor %}
                         </ul>
                  </div>
@@ -1420,4 +1511,4 @@ function incrementVisitsCount() {
           </script>
 </body>
 
-</html>
+</html> 

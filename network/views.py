@@ -450,6 +450,7 @@ def profile(request, username):
     frd = friend.objects.filter()
     rqst=friend_request.objects.filter()
     topic_foll=intrest_followers.objects.all()
+    orders=Order_Item.objects.all()
 
     inv=invite_request.objects.filter(to_user=request.user).count()
     noti=friend_request.objects.filter(to_user=request.user).count()
@@ -514,6 +515,7 @@ def profile(request, username):
         "topic_foll":topic_foll,
         "page_foll":page_foll,
         "dd":dd,
+        "orders":orders
         
        
     })
@@ -3846,10 +3848,10 @@ def download_histoy(request,id,pk):
 
     
 
-        post=Post.objects.get(id=id)
-        user=User.objects.get(id=request.user.id)
+        product=Post.objects.get(id=id)
+        free_download_user=User.objects.get(id=request.user.id)
 
-        dow=download(post=post,user=user)
+        dow=Order_Item(product=product,free_download_user=free_download_user)
         dow.save()
         return redirect("product_detail",id,pk)
 
