@@ -450,7 +450,7 @@ def profile(request, username):
     frd = friend.objects.filter()
     rqst=friend_request.objects.filter()
     topic_foll=intrest_followers.objects.all()
-    orders=Order_Item.objects.all()
+    orders=Order_Itemz.objects.all()
 
     inv=invite_request.objects.filter(to_user=request.user).count()
     noti=friend_request.objects.filter(to_user=request.user).count()
@@ -533,7 +533,7 @@ def buyprofile(request, username):
     user = User.objects.get(id=username)
     book = Post.objects.filter(creater=user).annotate(num_wishlist=Count('postz')).order_by('-date_created')
 
-    orders=Order_Item.objects.all()
+    orders=Order_Itemz.objects.all()
 
 
     user_following_list = []
@@ -1534,7 +1534,7 @@ def remove_cart_all(request):
 def checkout(request):
     crt=Cart.objects.filter(user=request.user)
     crt_count = crt.count()
-    ship = Order.objects.filter(user=request.user)
+    ship = Orderz.objects.filter(user=request.user)
 
     sub_total=0 
     grand_total = 0
@@ -1573,8 +1573,8 @@ def checkout(request):
 def order_item(request, product_id,uid):
     if request.method=='POST':
         user=User.objects.get(id=request.user.id)
-        if Order.objects.filter(user=request.user).exists():
-            ship1 =Order.objects.get(user=request.user)
+        if Orderz.objects.filter(user=request.user).exists():
+            ship1 =Orderz.objects.get(user=request.user)
             ship1.user=user
             ship1.Full_name = request.POST['fullname']
             ship1.Phone = request.POST['phone']
@@ -1587,7 +1587,7 @@ def order_item(request, product_id,uid):
             ship1.save()
             return redirect('order_manage',product_id,uid)
         else:
-            ship=Order()
+            ship=Orderz()
             ship.user=user
             ship.Full_name = request.POST['fullname']
             ship.Phone = request.POST['phone']
@@ -1606,13 +1606,7 @@ def order_item(request, product_id,uid):
     # If the request method is not POST, render the order form template
     return render(request, 'order_item.html', {'product': product})
 
-def confirm_order(request,pk):
-    ord=Order.objects.get(id=pk)
-    pro=Post.objects.get(id=pk)
 
-    item=Order_Item(order=ord,product=pro)
-    item.save()
-    return redirect("order_manage",pk)
 
 
 
@@ -1621,8 +1615,8 @@ def confirm_order(request,pk):
 def Orderss(request,pk):
     if request.method=='POST':
         user=User.objects.get(id=request.user.id)
-        if Order.objects.filter(user=request.user).exists():
-            ship1 =Order.objects.get(user=request.user)
+        if Orderz.objects.filter(user=request.user).exists():
+            ship1 =Orderz.objects.get(user=request.user)
             ship1.user=user
             ship1.Full_name = request.POST['fullname']
             ship1.Phone = request.POST['phone']
@@ -1635,7 +1629,7 @@ def Orderss(request,pk):
             ship1.save()
             return redirect('order_manage',pk)
         else:
-            ship=Order()
+            ship=Orderz()
             ship.user=user
             ship.Full_name = request.POST['fullname']
             ship.Phone = request.POST['phone']
@@ -1660,7 +1654,7 @@ def place_order(request,id):
 def dashboard(request):
     crt=Cart.objects.filter(user=request.user)
     crt_count = crt.count()
-    ship = Order.objects.filter(user=request.user)
+    ship = Orderz.objects.filter(user=request.user)
 
     sub_total=0 
     grand_total = 0
@@ -1671,7 +1665,7 @@ def dashboard(request):
 
     grand_total =  sub_total + shipping
  
-    orderitem = Order_Item.objects.filter(user=request.user)
+    orderitem = Order_Itemz.objects.filter(user=request.user)
     order_count = orderitem.count()
     shipadd = ""
     for i in ship:
@@ -1708,7 +1702,7 @@ def dashboard_profile(request):
 
 
     grand_total =  sub_total + shipping
-    orderitem = Order_Item.objects.filter(user=request.user)
+    orderitem = Order_Itemz.objects.filter(user=request.user)
     order_count = orderitem.count()
     category = Category.objects.all()
     context = {
@@ -1743,7 +1737,7 @@ def dash_edit_profile(request):
 
 
     grand_total =  sub_total + shipping
-    orderitem = Order_Item.objects.filter(user=request.user)
+    orderitem = Order_Itemz.objects.filter(user=request.user)
     order_count = orderitem.count()
     category = Category.objects.all()
     context = {
@@ -1788,7 +1782,7 @@ def dash_address_book(request):
     for i in crt:
       sub_total =  sub_total + i.product_qty * i.product.Product_Price 
 
-    ship = Order.objects.filter(user=request.user)
+    ship = Orderz.objects.filter(user=request.user)
     address = ""
     reg = ""
     for i in ship:
@@ -1796,7 +1790,7 @@ def dash_address_book(request):
         reg = str(i.Town)+" , " + str(i.State) 
 
     grand_total =  sub_total + shipping
-    orderitem = Order_Item.objects.filter(user=request.user)
+    orderitem = Order_Itemz.objects.filter(user=request.user)
     order_count = orderitem.count()
     category = Category.objects.all()
     context = {
@@ -1831,7 +1825,7 @@ def track_order(request):
 
 
     grand_total =  sub_total + shipping
-    orderitem = Order_Item.objects.filter(user=request.user)
+    orderitem = Order_Itemz.objects.filter(user=request.user)
     order_count = orderitem.count()
 
 
@@ -1860,8 +1854,8 @@ def order_manage(request,id,uid):
     crt=Cart.objects.filter()
     pos=Post.objects.get(id=id)
     crt_count = crt.count()
-    ship=Order.objects.filter(user=request.user)
-    ord=Order_Item.objects.all()
+    ship=Orderz.objects.filter(user=request.user)
+    ord=Order_Itemz.objects.all()
 
 
 
@@ -1994,7 +1988,7 @@ def show_product(request):
 
 @login_required(login_url='signin')
 def show_order(request):
-    order = Order.objects.all()
+    order = Orderz.objects.all()
     context = {
         'order' :order,
     }
@@ -2003,7 +1997,7 @@ def show_order(request):
 @login_required(login_url='signin')
 def status(request,id):
     if request.method=='POST':
-        order = Order.objects.get(id=id)
+        order = Orderz.objects.get(id=id)
         
         order.status = request.POST['st']
         order.save()
@@ -2014,8 +2008,8 @@ def status(request,id):
 
 @login_required(login_url='signin')
 def show_order_product(request,id):
-    items=Order_Item.objects.filter(order=id)
-    order =Order.objects.get(id=id)
+    items=Order_Itemz.objects.filter(order=id)
+    order =Orderz.objects.get(id=id)
     context={
        'items' : items,
        'order' :order,
@@ -3862,10 +3856,10 @@ def review_delete(request,nj,pk,id):
 
 def confirm_order(request,id,pk):
 
-    ordr=Order.objects.get(user=request.user)
-    post=Post.objects.get(id=pk)
+    ordr=Orderz.objects.get(user=request.user)
+    post=Post.objects.get(id=id)
 
-    item=Order_Item(order=ordr,product=post)
+    item=Order_Itemz(order=ordr,product=post)
     item.save()
 
 
@@ -3879,7 +3873,7 @@ def download_histoy(request,id,pk):
         product=Post.objects.get(id=id)
         free_download_user=User.objects.get(id=request.user.id)
 
-        dow=Order_Item(product=product,free_download_user=free_download_user)
+        dow=Order_Itemz(product=product,free_download_user=free_download_user)
         dow.save()
         return redirect("product_detail",id,pk)
 

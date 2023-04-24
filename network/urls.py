@@ -96,7 +96,7 @@ urlpatterns = [
     path('track_order',views.track_order,name='track_order'),
 
 
-    path('confirm_order/<int:pk>',views.confirm_order,name='confirm_order'),
+   
 
     path('my_order/<int:pk>/<int:kk>',views.my_order,name='my_order'),
 

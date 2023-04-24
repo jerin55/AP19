@@ -288,7 +288,7 @@ class Cart(models.Model):
 
 
 
-class Order(models.Model):
+class Orderz(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)  
     Full_name = models.CharField(max_length=255,null=True)
     Phone = models.CharField(max_length=12,null=True)
@@ -303,8 +303,8 @@ class Order(models.Model):
 
 
     
-class Order_Item(models.Model):
-    order = models.ForeignKey(Order,on_delete=models.CASCADE,null=True,blank=True) 
+class Order_Itemz(models.Model):
+    order = models.ForeignKey(Orderz,on_delete=models.CASCADE,null=True,blank=True) 
     product = models.ForeignKey(Post,on_delete=models.CASCADE)
     free_download_user = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True) 
     date_created=models.DateTimeField(default=timezone.now)

@@ -391,7 +391,11 @@
                                                     
                                                 </div>
                                                 <div class="post-functions">
-                                                    <div class="likes_count">{{ post.views_count }} </div> <p>&nbsp; views</p>
+                                                    {%if post.views_count == None %}
+                                                    <div class="likes_count">0 </div> <p>&nbsp; views</p>
+                                                    {% else %}
+                                                    <div class="likes_count">{{post.views_count}} </div> <p>&nbsp; views</p>
+                                                    {% endif %}
                                                 </div> 
                                             </div>
                                             

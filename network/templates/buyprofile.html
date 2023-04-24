@@ -430,7 +430,7 @@
                                 data-bs-target="#feed-tab-pane" type="button" role="tab" aria-controls="feed-tab-pane"
                                 aria-selected="true"><span class="material-symbols-outlined">
                                     format_list_bulleted
-                                </span> Your gizs</button>
+                                </span>  gizs</button>
                         </li>
                         
                         <li class="nav-item" role="presentation">
@@ -1489,6 +1489,7 @@ dddd
                     
                     <div class="tab-pane fade show " id="purchase-tab-pane" role="tabpanel"
                     aria-labelledby="purchase-tab" tabindex="0">
+                    <div class="scroll-page">
                     <ul class=" pages-list">
                         {% for orders in orders %}
                         {% if orders.order.user == request.user %}
@@ -1566,7 +1567,7 @@ dddd
                             {% endif %}
                             {% endfor %}
                       
-                        </ul>
+                        </ul></div>
                 
 
                 </div>
