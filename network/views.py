@@ -531,7 +531,7 @@ def wishlist_users(request, post_id):
 @login_required(login_url='login')
 def buyprofile(request, username):
     user = User.objects.get(id=username)
-    # all_posts = Post.objects.filter(creater=user).annotate(num_wishlist=Count('postz')).order_by('-date_created')
+    book = Post.objects.filter(creater=user).annotate(num_wishlist=Count('postz')).order_by('-date_created')
 
     orders=Order_Item.objects.all()
 
@@ -632,7 +632,8 @@ def buyprofile(request, username):
         'user_following': user_following,
         "topic_foll":topic_foll,
         "page_foll":page_foll,
-        "orders":orders
+        "orders":orders,
+        "book":book
        
     })
 
