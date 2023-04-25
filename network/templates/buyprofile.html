@@ -61,7 +61,7 @@
          width: 60px;
          border: none;
          height: 22px;
-         background-color: red;
+         background-color: rgb(94, 235, 94);
          box-shadow: 3px 2px 0px 0px #c0c0c0;
      }
      .buy-button{
@@ -149,21 +149,21 @@
 
         <div class="row">
             <div class="col-lg-3 col-md-3 col-12">
-                <div class="menu-list " style="background-color: rgb(52, 52, 59);">
+                <div class="menu-list " style="background-color: rgb(111, 139, 111);">
                     <div class="sidenav">
                        
                         <div style="height: 100%;">
                             <div>
                                 <div>
                                     <ul >
-                                        {% if request.user.id == username.id %}
+                                      
                                             <li >
                                                 <div class="switch-button" >
-                                                    <button class="buy-button" ><a href="{% url 'profile' user.id %}" style="text-decoration: none; color: black;">Sell</a></button>
-                                                    <button class="sell-button"><a href="{% url 'buyprofile' user.id %}" style="text-decoration: none; color: black;" > Buy</a></button>
+                                                    <button class="buy-button" ><a href="{% url 'profile' username.id %}" style="text-decoration: none; color: black;">Sell</a></button>
+                                                    <button class="sell-button"><a href="{% url 'buyprofile' username.id %}" style="text-decoration: none; color: black;" > Buy</a></button>
                                                   </div>
                                             </li>
-                                            {% endif %}
+                                        
                                        <br>
                                         <!-- <li >
                                             <a href="" style="color: white;" class="active">
@@ -206,22 +206,22 @@
                                                          Bookmarks
                                                 </a>
                                             </li> -->
-                                            <li>
+                                            <!-- <li>
                                                 <a href="" style="color: antiquewhite;">
                                                     <span class="material-symbols-outlined">
                                                         payments
                                                         </span>
                                                       payment
                                                 </a>
-                                            </li>
-                                            <li>
+                                            </li> -->
+                                            <!-- <li>
                                                 <a href="{% url 'pag' user.id %}" style="color: antiquewhite;">
                                                     <span class="material-symbols-outlined">
                                                         apps
                                                         </span>
                                                         Pages
                                                 </a>
-                                            </li>
+                                            </li> -->
                                             <li>
                                                 <a href="{% url 'logout' %}" style="color: antiquewhite;">
                                                     <span class="material-symbols-outlined">
@@ -309,28 +309,30 @@
                     <div class="profile-wrapper">
                         <div class="bg-profile"></div>
                         <div class="profile-img">
-                            <img src="/media/{{request.user.profile_pic}}" alt="">
+                            <img src="/media/{{username.profile_pic}}" alt="">
                         </div>
                         <div class="pro-info">
-                            <h2 style="margin-top: 50px;">{{ request.user.username }}</h2>
+                            <h2 style="margin-top: 50px;">{{ username.username }}</h2>
                             <p>{{ request.user.category }}</p>
+                            {% if request.user.id == username.id %}
                             <div> 
-                                <a href="{% url 'edit_profile' user.id %}" style="text-decoration: none;color: black">
+                                <a href="{% url 'edit_profile' username.id %}" style="text-decoration: none;color: black">
                               <span
                                         class="material-symbols-outlined">
                                        
                                     </span> <i class='far fa-edit' style='font-size:20px'></i> &nbsp; Edit profile</a>
                        </div>
+                       {% endif %}
                         </div>
 
                     </div>
                     <ul class="viewed-list">
-                        <li>first name : <span><h6 >{{ user.first_name }}</h6></span></li>
-                        <li>last name : <span><h6 >{{ user.last_name }}</h6></span></li>
-                        <li>gender : <span><h6 >{{ user.genter }}</h6></span></li>
-                        <li>country : <span><h6 >{{ user.state }}</h6></span></li>
-                        <li>email : <span><h6 >{{ user.email }}</h6></span></li>
-                        <li>contact : <span><h6 >{{ user.mobile }}</h6></span></li>
+                        <li>first name : <span><h6 >{{ username.first_name }}</h6></span></li>
+                        <li>last name : <span><h6 >{{ username.last_name }}</h6></span></li>
+                        <li>gender : <span><h6 >{{ username.genter }}</h6></span></li>
+                        <li>country : <span><h6 >{{ username.state }}</h6></span></li>
+                        <li>email : <span><h6 >{{ username.email }}</h6></span></li>
+                        <li>contact : <span><h6 >{{ username.mobile }}</h6></span></li>
                     </ul>
                 </div>
 
@@ -387,12 +389,22 @@
 
                         <div class="d-flex align-items-center">
                             <div class="company-review">
+                                {% if request.user.id == username.id %}
                                 {% if user_followers == 0 or user_followers == 1 %}
                                 <h3><a  style="text-decoration: none;color: black;">{{post_count}}</a></h3>
                                 {% else %}
                                 <h3><a  style="text-decoration: none;color: black;">{{post_count}}</a></h3>
                                 {% endif %}
                                 <p><a  style="text-decoration: none;color: black;">giz posted</a></p>
+                                {% else %}
+                                {% if user_followers == 0 or user_followers == 1 %}
+                                <h3><a  style="text-decoration: none;color: black;">{{post_cnt}}</a></h3>
+                                {% else %}
+                                <h3><a  style="text-decoration: none;color: black;">{{post_cnt}}</a></h3>
+                                {% endif %}
+                                <p><a  style="text-decoration: none;color: black;">giz posted</a></p>
+                                {% endif %}
+
                             </div>
                             <div class="company-review">
                                 {% if user_followers == 0 or user_followers == 1 %}
@@ -432,7 +444,7 @@
                                     format_list_bulleted
                                 </span>  gizs</button>
                         </li>
-                        
+                        {% if request.user.id == username.id %}
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="purchase-tab" data-bs-toggle="tab"
                                 data-bs-target="#purchase-tab-pane" type="button" role="tab"
@@ -441,6 +453,8 @@
                                     attach_file
                                 </span> Orders</button>
                         </li>
+                      
+
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="bookmark-tab" data-bs-toggle="tab"
                                 data-bs-target="#bookmark-tab-pane" type="button" role="tab"
@@ -449,6 +463,7 @@
                                     </span>
                                          Bookmarks </button>
                         </li>
+                        {% endif %}
                         <!-- <li class="nav-item" role="presentation">
                           
                             <button class="nav-link" id="resources-tab" data-bs-toggle="tab"
@@ -1491,6 +1506,8 @@ dddd
                     aria-labelledby="purchase-tab" tabindex="0">
                     <div class="scroll-page">
                     <ul class=" pages-list">
+                        <div class="ml-auto btn  btn-primary" > <a>+ Edit Payment details</a></div>
+                       
                         {% for orders in orders %}
                         {% if orders.order.user == request.user %}
                        
@@ -1693,14 +1710,15 @@ dddd
             </div>
             <div class="col-lg-3 col-md-3 col-12">
                 <div class="feed-list bg-white">
-                    <div style="margin-top: -10px;">
+                    <h5>Suggestions</h5>
+                    <!-- <div style="margin-top: -10px;">
                         <form method="GET">
                           <div class="search">
                             <button type="submit"><span class="fa fa-search"></span></button>
                             <input class="outline" type="text" name="search" placeholder="Suggestions">
                           </div>
                         </form>
-                      </div>            
+                      </div>             -->
                               
                           
                               {% if search %}

@@ -456,6 +456,8 @@ def profile(request, username):
     noti=friend_request.objects.filter(to_user=request.user).count()
 
     dd=inv + noti
+
+   
         
     page_foll=pagefollow.objects.all()
     choose=intrest_followers.objects.all()
@@ -515,7 +517,8 @@ def profile(request, username):
         "topic_foll":topic_foll,
         "page_foll":page_foll,
         "dd":dd,
-        "orders":orders
+        "orders":orders,
+        
         
        
     })
@@ -534,6 +537,7 @@ def buyprofile(request, username):
     book = Post.objects.filter(creater=user).annotate(num_wishlist=Count('postz')).order_by('-date_created')
 
     orders=Order_Itemz.objects.all()
+    post_cnt=Post.objects.filter(creater=username).count()
 
 
     user_following_list = []
@@ -543,7 +547,7 @@ def buyprofile(request, username):
    
     us=request.user
 
-    user_following = friend_request.objects.filter(from_user__username=request.user.username)
+    user_following = friend_request.objects.filter(from_user__id=username)
 
 
     for users in user_following:
@@ -633,7 +637,8 @@ def buyprofile(request, username):
         "topic_foll":topic_foll,
         "page_foll":page_foll,
         "orders":orders,
-        "book":book
+        "book":book,
+        "post_cnt":post_cnt
        
     })
 
@@ -2316,12 +2321,13 @@ def userfriends(request,id):
 
 @csrf_exempt
 def following(request,id):
-    frd = friend_request.objects.filter()
+    frd = friend_request.objects.filter(from_user=id)
+
     return render(request,"following.html",{"frd":frd}) 
 
 @csrf_exempt
 def followers(request,id):
-    frd = friend_request.objects.filter()
+    frd = friend_request.objects.filter(to_user=id)
     return render(request,"followers.html",{"frd":frd}) 
 
 #invite

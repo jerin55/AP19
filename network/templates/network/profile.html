@@ -63,7 +63,7 @@
             width: 60px;
             border: none;
             height: 22px;
-            background-color: red;
+            background-color: rgb(74, 158, 228);
             box-shadow: 3px 2px #c0c0c0;
         }
         .buy-button{
@@ -151,21 +151,21 @@
 
         <div class="row">
             <div class="col-lg-3 col-md-3 col-12">
-                <div class="menu-list " style="background-color: #283747;">
+                <div class="menu-list " style="background-color:rgb(120, 159, 189);">
                     <div class="sidenav">
                        
                         <div style="height: 100%;">
                             <div>
                                 <div>
                                     <ul >
-                                        {% if request.user.id == username.id %}
+                                        
                                             <li>
                                                 <div class="switch-button" >
-                                                    <button class="sell-button" ><a href="{% url 'profile' user.id %}" style="text-decoration: none; color: black;">Sell</a></button>
-                                                    <button class="buy-button"> <a href="{% url 'buyprofile' user.id %}" style="text-decoration: none; color: black;" > Buy</a></button>
+                                                    <button class="sell-button" ><a href="{% url 'profile' username.id %}" style="text-decoration: none; color: black;">Sell</a></button>
+                                                    <button class="buy-button"> <a href="{% url 'buyprofile' username.id %}" style="text-decoration: none; color: black;" > Buy</a></button>
                                                   </div>
                                             </li>
-                                            {% endif %}
+                                          
                                        <br>
                                         <!-- <li >
                                             <a href="" style="color: white;" class="active">
@@ -209,7 +209,7 @@
                                                         Bookmark
                                                 </a>
                                             </li> -->
-                                            <li>
+                                            <!-- <li>
                                                 <a href="" style="color: antiquewhite;">
                                                     <span class="material-symbols-outlined">
                                                         payments
@@ -219,15 +219,15 @@
                                                         payment   
                                                         
                                                 </a>
-                                            </li>
-                                            <li>
+                                            </li> -->
+                                            <!-- <li>
                                                 <a href="" style="color: antiquewhite;">
                                                     <span class="material-symbols-outlined">
                                                         apps
                                                         </span>
                                                         Pages
                                                 </a>
-                                            </li>
+                                            </li> -->
                                             <li>
                                                 <a href="{% url 'logout' %}" style="color: antiquewhite;">
                                                     <span class="material-symbols-outlined">
@@ -315,11 +315,12 @@
                     <div class="profile-wrapper">
                         <div class="bg-profile"></div>
                         <div class="profile-img">
-                            <img src="/media/{{request.user.profile_pic}}" alt="">
+                            <img src="/media/{{username.profile_pic}}" alt="">
                         </div>
                         <div class="pro-info">
-                            <h2 style="margin-top: 50px;">{{ request.user.username }}</h2>
+                            <h2 style="margin-top: 50px;">{{ username.username }}</h2>
                             <p>{{ request.user.category }}</p>
+                            {% if request.user.id == username.id %}
                             <div> 
                                 <a href="{% url 'edit_profile' user.id %}" style="text-decoration: none;color: black">
                               <span
@@ -327,16 +328,17 @@
                                        
                                     </span> <i class='far fa-edit' style='font-size:20px'></i> &nbsp; Edit profile</a>
                        </div>
+                       {% endif %}
                         </div>
 
                     </div>
                     <ul class="viewed-list">
-                        <li>first name : <span><h6 >{{ user.first_name }}</h6></span></li>
-                        <li>last name : <span><h6 >{{ user.last_name }}</h6></span></li>
-                        <li>gender : <span><h6 >{{ user.genter }}</h6></span></li>
-                        <li>country : <span><h6 >{{ user.state }}</h6></span></li>
-                        <li>email : <span><h6 >{{ user.email }}</h6></span></li>
-                        <li>contact : <span><h6 >{{ user.mobile }}</h6></span></li>
+                        <li>first name : <span><h6 >{{ username.first_name }}</h6></span></li>
+                        <li>last name : <span><h6 >{{ username.last_name }}</h6></span></li>
+                        <li>gender : <span><h6 >{{ username.genter }}</h6></span></li>
+                        <li>country : <span><h6 >{{ username.state }}</h6></span></li>
+                        <li>email : <span><h6 >{{ username.email }}</h6></span></li>
+                        <li>contact : <span><h6 >{{ username.mobile }}</h6></span></li>
                     </ul>
                 </div>
 
@@ -409,8 +411,13 @@
                                 <p><a href="{% url 'followers' username.id %}" style="text-decoration: none;color: black;">Followers</a></p>
                             </div>&nbsp;&nbsp;
                             <div class="company-review">
+                                {% if request.user.id == username.id %}
+                                <h3><a href="{% url 'following' request.user.id %}" style="text-decoration: none;color: black;">{{user_following}}</a> </h3>
+                                <p><a href="{% url 'following' request.user.id %}" style="text-decoration: none;color: black;">Following</a></p>
+                                {% else %}
                                 <h3><a href="{% url 'following' username.id %}" style="text-decoration: none;color: black;">{{user_following}}</a> </h3>
                                 <p><a href="{% url 'following' username.id %}" style="text-decoration: none;color: black;">Following</a></p>
+                                {% endif %}
                             </div>
                             <div class="company-review">
                               
@@ -470,6 +477,17 @@
                                     info
                                 </span> About</button>
                         </li>
+                        {% if request.user.id == username.id %}
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="" data-bs-toggle="tab"
+                                data-bs-target="" type="button" role="tab" aria-controls="about-tab-pane"
+                                aria-selected="false">  <span class="material-symbols-outlined">
+                                    payments
+                                    </span>
+                                     Payment Options</button>
+                        </li>
+                        {% endif %}
+                       
                         {% if user.username == username.username %}
                         <!-- <li class="nav-item" role="presentation">
                             <a href="{% url 'edit_profile' user.id %}" style="text-decoration: none;color: black">
@@ -488,7 +506,7 @@
                             aria-labelledby="feed-tab" tabindex="0">
                             <div class="scroll-page" >
                             {% if user.username == username.username %}
-                            <div class="create-post " style="background-color: #405766;">
+                            <div class="create-post " style="background-color: rgb(66, 111, 148);">
                                 <div class="form-group" >
                                     <a style="text-decoration: none; " href="{% url 'create_post' user.id %}">
                                     <input type="text" class="form-control" placeholder="create new giz..."></a>
@@ -1016,9 +1034,9 @@
                                             <h6>{{ orders.product.categories }}</h6>
                                             <p>{{ orders.product.content_text }}</p>
                                        <div class="action-btn">
-                                        <button class="btn btn-tranparent">
+                                        <!-- <button class="btn btn-tranparent">
                                             Download Invoice 
-                                        </button>
+                                        </button> -->
                                         <button class="btn btn-tranparent text-blue">
                                             <a href="" style="text-decoration: none;color: black;">View File </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                             {% if orders.product.status == 'nsale' %}
@@ -1332,7 +1350,7 @@
                                           <div>
                                              
                                                   <h6><a href=" {% url 'topicpage' choose.topic.id %}" style="text-decoration: none; color: black;">
-                                                    {{choose.topic.id|counts2:user.id}} giz 
+                                                    {{choose.topic.id|counts2:username.id}} giz 
 
                                                     
                                                 </a></h6>
@@ -1350,7 +1368,7 @@
                 </div>
 
                 <div class="feed-list bg-white">
-                    <h4 style="margin-left: 20px; "> Suggessions<span class="material-symbols-outlined">
+                    <h4 style="margin-left: 20px; "> Suggestions<span class="material-symbols-outlined">
                         
                         </span></h4><br>
             

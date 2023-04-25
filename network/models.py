@@ -298,6 +298,7 @@ class Orderz(models.Model):
     Town =  models.CharField(max_length=60,null=True)
     State =  models.CharField(max_length=60,null=True)
     Zip = models.IntegerField(null=True)
+    date_created=models.DateTimeField(default=timezone.now)
     
     
 
@@ -308,6 +309,7 @@ class Order_Itemz(models.Model):
     product = models.ForeignKey(Post,on_delete=models.CASCADE)
     free_download_user = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True) 
     date_created=models.DateTimeField(default=timezone.now)
+    
     
 
 
