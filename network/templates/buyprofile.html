@@ -1501,8 +1501,174 @@ dddd
                     </div>
                 
                     </div>
+                    <div class="tab-pane fade show active" id="purchase-tab-pane" role="tabpanel"
+                            aria-labelledby="purchase-tab" tabindex="0">
+
+                            <ul class="nav nav-tabs nav-pages" id="myTab" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button style="background-color: #63788d; color: #FFF; " class="nav-link active" id="tab1-tab" data-bs-toggle="tab"
+                                        data-bs-target="#tab1-tab-pane" type="button" role="tab" aria-controls="tab1-tab-pane"
+                                        aria-selected="true">ORDERS HISTORY</button>
+                                </li>&nbsp;
+                                <!-- <li class="nav-item" role="presentation">
+                                    <button style="background-color: #1e90ff; color: #FFF; " class="nav-link" id="tab2-tab" data-bs-toggle="tab"
+                                        data-bs-target="#tab2-tab-pane" type="button" role="tab" aria-controls="tab2-tab-pane"
+                                        aria-selected="false">BOOKMARK</button>
+                                </li> -->
+                                <li class="nav-item" role="presentation">
+                                    <button style="background-color: #63788d; color: #FFF; " class="nav-link" id="tab3-tab" data-bs-toggle="tab"
+                                        data-bs-target="#tab3-tab-pane" type="button" role="tab" aria-controls="tab3-tab-pane"
+                                        aria-selected="false">DOWNALOAD HISTORY</button>
+                                </li>
+                                <!-- <li class="nav-item" role="presentation">
+                                    <button style="background-color: #1e90ff; color: #FFF;" class="nav-link" id="tab4-tab" data-bs-toggle="tab"
+                                        data-bs-target="#tab4-tab-pane" type="button" role="tab" aria-controls="tab4-tab-pane"
+                                        aria-selected="false">EDIT PAYMENT DEAILS</button>
+                                </li> -->
+                            </ul>
+                        
+                            <div class="tab-content" id="myTabContent">
+                                <div class="tab-pane fade show active" id="tab1-tab-pane" role="tabpanel" aria-labelledby="tab1-tab">
+                                    
+
+                                    <ul class=" pages-list">
+                                        {% for orders in orders %}
+                                        {% if orders.order.user == request.user %}
+                                       
+                                        
+                                            <li class="bg-white radius-20 pt-3 pb-3">
+                                                <div class="order-flex-wrapper">
+                                                    <div class="order-item-img">
+                                                        <div class="img-order-lg">
+                                                            <img src="/media/{{ orders.product.content_image }}" alt="">
+                                                            
+                                                
+                                                        </div>
+                                                    </div>
+                                                   
+                                                    <div class="order-detail-block">
+                                                        
+                                                        <h5 class="resource-title">{{ orders.product.content_text }}  <span> {{ orders.product.date_created }}</span></h5>
+                                                        <h6>{{ orders.product.categories }}</h6>
+                                                        <p>{{ orders.product.content_text }}</p>
+                                                   <div class="action-btn">
+                                                    <button class="btn btn-tranparent">
+                                                        Download Invoice 
+                                                    </button>
+                                                    <button class="btn btn-tranparent text-blue">
+                                                        <a href="{% url 'product_detail' orders.product.id  orders.order.user.id %}" style="text-decoration: none;color: black;"> View File </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                        {% if orders.product.status == 'nsale' %}
+                                                        Type :&nbsp;<a class="mr - 1 badge badge-danger">  Free </a>
+                                                        {% else %}
+                                                        Type :&nbsp;<a class="mr - 1 badge badge-danger"> Paid </a>
+            
+                                                        {% endif %}
+                                                      
+                                                    </button>
+                                                   </div>
+                                                    </div>
+                                                   
+                                                </div>   
+                                            </li>
+                                            {% endif  %}
+                                            <!-- <li class="bg-white radius-20 pt-3 pb-3">
+                                                <div class="order-flex-wrapper">
+                                                    <div class="order-item-img">
+                                                        <div class="img-order-lg">
+                                                            <img src="/media/{{ orders.product.content_image }}" alt="">
+                                                            
+                                                
+                                                        </div>
+                                                    </div>
+                                                   
+                                                    <div class="order-detail-block">
+                                                        
+                                                        <h5 class="resource-title">{{ orders.product.content_text }}  <span>{{ orders.date_created }}</span></h5>
+                                                        <h6>{{ orders.product.categories }}</h6>
+                                                        <p>{{ orders.product.content_text }}</p>
+                                                   <div class="action-btn">
+                                                   
+                                                    <button class="btn btn-tranparent text-blue">
+                                                        <a href="" style="text-decoration: none;color: black;">View File </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                        {% if orders.product.status == 'nsale' %}
+                                                        Type :&nbsp;<a class="mr - 1 badge badge-danger">  Free </a>
+                                                        {% else %}
+                                                        Type :&nbsp;<a class="mr - 1 badge badge-danger"> Paid </a>
+            
+                                                        {% endif %}
+                                                      
+                                                    </button>
+                                                   </div>
+                                                    </div>
+                                                   
+                                                </div>   
+                                            </li> -->
+                                          
+                                            {% endfor %}
+                                      
+                                        </ul>
+
+                                </div>
+
+                                <div class="tab-pane fade" id="tab2-tab-pane" role="tabpanel" aria-labelledby="tab2-tab">
+                                    
+
+DOWNLAOD HISTORY
+
+                                </div>
+                                <div class="tab-pane fade" id="tab3-tab-pane" role="tabpanel" aria-labelledby="tab3-tab">
+                                   
+                                   
+                                   <ul class=" pages-list">
+                                    {% for downloads in downloads %}
+                                    {% if downloads.post.status == 'nsale' %}
+ 
+ 
+                                    <li class="bg-white radius-20 pt-3 pb-3">
+                                     <div class="order-flex-wrapper">
+                                         <div class="order-item-img">
+                                             <div class="img-order-lg" >
+                                                 <img src="/media/{{ downloads.post.content_image }}" alt="" style="border-radius: 6px;">
+                                                 
+                                     
+                                             </div>
+                                         </div>
+                                        
+                                         <div class="order-detail-block">
+                                             
+                                             <h5 style="color: #1e90ff;" class="resource-title">downloaded  {{ downloads.post.content_image }}</h5><span class="text-grey"> {{ downloads.post.date_created }}</span>
+                                             <h6>{{ downloads.post.categories }}</h6>
+                                             <p>{{ downloads.post.content_text }}</p>
+                                        <div class="action-btn">
+                                      
+                                         <button class="btn btn-tranparent text-blue">
+                                             <a href="{% url 'product_detail' downloads.post.id  downloads.post.creater.id %}" style="text-decoration: none;color: black;"> View File </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                             {% if downloads.post.status == 'nsale' %}
+                                             Type :&nbsp;<a class="mr - 1 badge badge-info">  Free </a>
+                                             {% else %}
+                                             Type :&nbsp;<a class="mr - 1 badge badge-info"> Paid </a>
+ 
+                                             {% endif %}
+                                           
+                                         </button>
+                                        </div>
+                                         </div>
+                                        
+                                     </div>   
+                                 </li>
+                                    </ul>
+
+                                    {% endif %}
+                                    {% endfor %}
+                                </div>
+                                <div class="tab-pane fade" id="tab4-tab-pane" role="tabpanel" aria-labelledby="tab4-tab">
+                                    TESTED
+                                 </div>
+                            </div>
+                        
+                        </div>
                     
-                    <div class="tab-pane fade show " id="purchase-tab-pane" role="tabpanel"
+                    <!-- <div class="tab-pane fade show " id="purchase-tab-pane" role="tabpanel"
                     aria-labelledby="purchase-tab" tabindex="0">
                     <div class="scroll-page">
                     <ul class=" pages-list">
@@ -1587,7 +1753,7 @@ dddd
                         </ul></div>
                 
 
-                </div>
+                </div> -->
 
 
 

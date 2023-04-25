@@ -542,6 +542,8 @@ def buyprofile(request, username):
     orders=Order_Itemz.objects.all()
     post_cnt=Post.objects.filter(creater=username).count()
 
+    downloads=download.objects.all()
+
 
     user_following_list = []
     feed = []
@@ -641,7 +643,8 @@ def buyprofile(request, username):
         "page_foll":page_foll,
         "orders":orders,
         "book":book,
-        "post_cnt":post_cnt
+        "post_cnt":post_cnt,
+        "downloads":downloads
        
     })
 
