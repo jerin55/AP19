@@ -457,6 +457,8 @@ def profile(request, username):
 
     dd=inv + noti
 
+    downloads=download.objects.all()
+
    
         
     page_foll=pagefollow.objects.all()
@@ -518,6 +520,7 @@ def profile(request, username):
         "page_foll":page_foll,
         "dd":dd,
         "orders":orders,
+        "downloads":downloads
         
         
        
@@ -3879,7 +3882,7 @@ def download_histoy(request,id,pk):
         product=Post.objects.get(id=id)
         free_download_user=User.objects.get(id=request.user.id)
 
-        dow=Order_Itemz(product=product,free_download_user=free_download_user)
+        dow=download(post=product,user=free_download_user)
         dow.save()
         return redirect("product_detail",id,pk)
 
