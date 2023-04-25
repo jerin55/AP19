@@ -411,10 +411,10 @@
                     <li class="bg-white radius-20">
                         <div class="d-flex align-items-center notification-items">
                             <div class="page-img">
-                                <img src="/media/{{i.from_user.profile_pic}}" alt="">
+                                <a href="/{{i.from_user.id}}"><img src="/media/{{i.from_user.profile_pic}}" alt=""></a>
                             </div>
                             <div class="pages-titles">
-                            <p> <span style="font-size: 18px;">{{i.from_user.username}}</span>  Accepted Your <span style="font-size: 18px;">{{i.pages.pagename}}</span>  Page Joining Request ... <br>
+                                <a href="/{{i.from_user.id}}" style="text-decoration: none; color: rgb(61, 60, 60);"><span style="font-size: 18px;">{{i.from_user.username}}</span> </a>  Accepted Your <a href="/pageprofile/{{i.pages.id}}" style="text-decoration: none; color: rgb(61, 60, 60);"><span style="font-size: 18px;">{{i.pages.pagename}}</span></a> Page Joining Request  <br>
                                 <!-- <span>UNIX directory tree hierarchy</span>  page</p> -->
                                 <span class="text-grey">{{i.date_created}}</span>
                             </div>
@@ -446,6 +446,32 @@
                                             </div>
                                 {% endif %}
                             </div>
+                        </div>
+            
+                        <!-- <div class="notification">
+                            <span class="material-symbols-outlined">
+                                add
+                            </span>
+                        </div> -->
+                    </li>
+                {% endif %}
+
+                {% if i.type == "Page_Post_Reviwes" %}
+
+
+                    <li class="bg-white radius-20">
+                        <div class="d-flex align-items-center notification-items">
+                            <a href="/product_detail/{{i.post.id}}/{{i.to_user.id}}" style="text-decoration: none; color: rgb(61, 60, 60);">
+                            <div class="page-img">
+                                <img src="/media/{{i.from_user.profile_pic}}" alt="">
+                            </div>
+                            <div class="pages-titles">
+                             <span style="font-size: 18px;">{{i.from_user.username}}</span>  Reviewed in your post ... <br>
+                               
+                                <span class="text-grey">{{i.date_created}}</span>
+                            </a>
+                            </div>
+                        
                         </div>
             
                         <!-- <div class="notification">

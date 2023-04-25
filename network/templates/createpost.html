@@ -162,7 +162,7 @@ input:checked + .slider:after {
          
                     <li style="list-style: none; padding-left: 15px;">
                         <div class="notification">
-                       <a href="{% url 'notification'  %}"><span class="material-symbols-outlined">
+                       <a href=""><span class="material-symbols-outlined">
                         notifications
                     </span></a> 
                         
@@ -260,7 +260,7 @@ input:checked + .slider:after {
                                                 </a>
                                             </li>
                                             <li>
-                                                <a href="{% url 'notification'  %}">
+                                                <a href="">
                                                     <span class="material-symbols-outlined">
                                                         notifications
                                                         </span>
@@ -426,8 +426,6 @@ input:checked + .slider:after {
                                                     <label>Add Topics</label>
                                                     <input type="text" data-role="tagsinput" class="form-control" name="tages_n" value="True">
                                                 </div>
-
-                                                
                                                   <div class="form-action-btns">
                                                     <div>
                                                         <label for="insert-img" > Image/video/Pdf<br></label>
@@ -436,12 +434,7 @@ input:checked + .slider:after {
                                                     </div>
                                                     <br>
                                                 </div>
-                                                <!-- <div class="form-group">
-                                                  <label for="id_video_url">Video URL:</label>
-                                                  <input type="text" name="video_url" id="id_video_url">
-                                                </div> -->
-
-                                                <!-- from -->
+                                              
                                                 <div class="checkbox-card">
                                                     <div class="checkbox"> 
                                                         <label>
@@ -479,10 +472,7 @@ input:checked + .slider:after {
                                                         </div>
 
                                                     </div>
-                                                        <!-- <div class="mb-3" style="margin-left: 10x;">
-                                                            <label for="exampleFormControlInput1" class="form-label">title</label>
-                                                            <input type="type" class="form-control" name="title" >                        
-                                                          </div> -->
+                                                      
 
                                                           <div style="display: flex;">
                                                               
@@ -495,7 +485,7 @@ input:checked + .slider:after {
                                                                 <div class="col-md-6"  >
                                                                     <div class="mb-3">
                                                                         <label for="exampleFormControlInput1" class="form-label">Price</label>
-                                                                          <input type="number" class="form-control" placeholder="$ 250" name="Product_Price">                        
+                                                                        <input type="number" class="form-control" placeholder="₹250" name="Product_Price" id="product-price">                       
                                                                       </div> 
                                                                </div>
 
@@ -516,7 +506,7 @@ input:checked + .slider:after {
                                                             <div class="col-md-6" id="input3" style="display:none;">
                                                                 <div class="mb-3">
                                                                     <label for="exampleFormControlInput1" class="form-label">Price</label>
-                                                                      <input type="number" id="discount-code" class="form-control" placeholder="Offer Price$" name="offer_price" >                        
+                                                                    <input type="number" id="discount-code" class="form-control" placeholder="₹ Offer Price " name="offer_price">                        
                                                                   </div> 
                                                            </div>
                                                             
@@ -527,52 +517,21 @@ input:checked + .slider:after {
 
 
 
-
-                                                            <div style="display: flex;">
-
-                                                                
-
-
+                                                           <div style="display: flex;">
                                                             <div class="col-md-6" id="input1" style="display:none;">
-                                                                    <div class="mb-3">
-                                                                        <label for="exampleFormControlInput1" class="form-label">Start Date:</label>
-                                                                          <input type="date" id="start-date" class="form-control" placeholder="OFFER PRICE$" name="offer_price_start" >                        
-                                                                      </div> 
-                                                               </div>
-                                                               <div class="col-md-6" id="input2" style="display:none;">
-                                                                <div class="mb-3">
-                                                                    <label for="exampleFormControlInput1" class="form-label">End Date:</label>
-                                                                      <input type="date" id="end-date" class="form-control" placeholder="OFFER PRICE$" name="offer_price_end"  >                        
-                                                                  </div> 
-                                                           </div>
-                                                    </div>
-                                                        
-                                                        
-                                                            <!-- <div class="mb-3">
-                                                                <label for="exampleFormControlInput1" class="form-label">offer price</label>
-                                                                <input type="number" class="form-control" name="offer_price" >      
-                                                                
-                                                                <label for="exampleFormControlInput1" class="form-label">price</label>
-                                                                <input type="number" class="form-control" name="Product_Price" >      
-                                                              </div> -->
-                                                  
-                                                       
-                                                        <!-- <div class="mb-3">
-                                                            <label for="exampleFormControlInput1" class="form-label">category</label>
-                                                            <select name="categories" class="form-control">
-                                                              <option>Article</option>
-                                                              <option>Book</option>
-                                                              <option>Case Study</option>
-                                                              <option>Education</option>
-                                                              <option>Interviews</option>
-                                                              <option>Market Research</option>
-                                                              <option>Observation</option>
-                                                              <option>Poem</option>
-                                                              <option>Survey</option>
-                                                              <option>Work & Business</option>
-                                                              
-                                                            </select>                     
-                                                          </div> -->
+                                                              <div class="mb-3">
+                                                                <label for="exampleFormControlInput1" class="form-label">Start Date:</label>
+                                                                <input type="date" id="start-date" class="form-control" placeholder="OFFER PRICE$" name="offer_price_start">                        
+                                                              </div> 
+                                                            </div>
+                                                            <div class="col-md-6" id="input2" style="display:none;">
+                                                              <div class="mb-3">
+                                                                <label for="exampleFormControlInput1" class="form-label">End Date:</label>
+                                                                <input type="date" id="end-date" class="form-control" placeholder="OFFER PRICE$" name="offer_price_end" min="<?php echo date('Y-m-d'); ?>" oninput="setEndDateMin()">                        
+                                                              </div> 
+                                                            </div>
+                                                          </div>
+                                                     
                                                     </div>
                                                     <div class="col-md-6" style="left: 42%">
                                                         <button class="btn btn-primary" type="submit">post now</button>
@@ -807,6 +766,47 @@ function incrementVisitsCount() {
 }
 
 	</script>
+    <script>
+    // Get the original and offer price inputs
+const originalPriceInput = document.getElementById('product-price');
+const offerPriceInput = document.getElementById('discount-code');
+
+// Listen for changes in the offer price input
+offerPriceInput.addEventListener('input', () => {
+  const originalPrice = parseInt(originalPriceInput.value);
+  const offerPrice = parseInt(offerPriceInput.value);
+
+  // Check if the offer price is greater than or equal to the original price
+  if (offerPrice >= originalPrice) {
+    // Show an alert
+    alert('Offer price cannot be greater than or equal to the original price!');
+
+    // Clear the offer price input value
+    offerPriceInput.value = '';
+  }
+});
+      </script>
+      <script>
+        function setEndDateMin() {
+          var today = new Date();
+          var dd = today.getDate();
+          var mm = today.getMonth()+1; //January is 0!
+          var yyyy = today.getFullYear();
+      
+          if(dd<10){
+              dd='0'+dd;
+          } 
+      
+          if(mm<10){
+              mm='0'+mm;
+          } 
+      
+          today = yyyy+'-'+mm+'-'+dd;
+      
+          document.getElementById("end-date").setAttribute("min", today);
+        }
+      </script>
+      
 </body>
 
 </html>

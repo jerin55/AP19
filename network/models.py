@@ -399,22 +399,36 @@ class Notifications(models.Model):
 
     invite_request =models.ForeignKey(invite_request,on_delete=models.CASCADE,related_name='invite_request',null=True,blank=True)
 
-    friend_request =models.ForeignKey(friend_request,on_delete=models.CASCADE,related_name='friend_request',null=True,blank=True)
+    friend_request = models.ForeignKey(friend_request,on_delete=models.CASCADE,related_name='friend_request',null=True,blank=True)
 
+    review = models.ForeignKey(review,on_delete=models.CASCADE,related_name='review',null=True,blank=True)
 
+    ReviewReply = models.ForeignKey(ReviewReply,on_delete=models.CASCADE,related_name='ReviewReply',null=True,blank=True)
 
     choice =(
         ('Default','Default'),
         ('User_Fllow','User_Fllow'),
         ('User_Fllowing','User_Fllowing'),
         ('User_Post_like','User_Post_like'),
+        ('User_New_Post','User_New_Post'),
         ('User_Post_Reviwes','User_Post_Reviwes'),
+        ('User_Post_Reviwes_Replay','User_Post_Reviwes_Replay'),
         ('Page_Invitions_To_User','Page_Invitions_To_User'),
         ('User_Accept_Page_Invitions','User_Accept_Page_Invitions'),
         ('User_Page_Join_Request','User_Page_Join_Request'),
         ('Page_Accept_User_Invitions','Page_Accept_User_Invitions'),
+        ('Page_New_Post','Page_New_Post'),
         ('Page_Post_like','User_Post_like'),
         ('Page_Post_Reviwes','User_Post_Reviwes'),
+        ('Page_Post_Reviwes_Replay','Page_Post_Reviwes_Replay'),
+
+        ('Intrest_Post_Reviwes','Intrest_Post_Reviwes'),
+        ('Intrest_Post_Reviwes_Replay','Intrest_Post_Reviwes_Replay'),
+
+        ('Intrest_level_2_Post_Reviwes','Intrest_level_2_Post_Reviwes'),
+        ('Intrest_level_2_Post_Reviwes_Replay','Intrest_level_2_Post_Reviwes_Replay'),
+
+        
     )
 
 

@@ -1471,6 +1471,54 @@ def reviews(request,userid,id):
     rating =request.POST.get('rating')
     rev = review (post=post,reviewer=reviewer,reviewz=reviewz,mail=mail,rating=rating)
     rev.save()
+
+    revw = review.objects.get(id=rev.id)
+
+    
+
+    if post.posts_type == "page_post":
+        notification = Notifications()
+        notification.from_user = request.user
+        notification.to_user = post.creater
+        notification.pages = post.page_id
+        notification.post = post
+        notification.review = revw
+
+
+        notification.type = "Page_Post_Reviwes"
+
+        notification.save()
+
+    elif post.posts_type == "user_post":
+        notification = Notifications()
+        notification.from_user = post.creater
+        notification.to_user = request.user
+        notification.post = post
+        notification.review = revw
+        notification.type = "User_Post_Reviwes"
+        notification.save()
+
+    elif post.posts_type == "intrest_post":
+        notification = Notifications()
+        notification.from_user = post.creater
+        notification.to_user = request.user
+        notification.post = post
+        notification.review = revw
+        notification.type = "Intrest_Post_Reviwes"
+        notification.save()  
+
+
+    elif post.posts_type == "lev_2_intrest_post":
+        notification = Notifications()
+        notification.from_user = post.creater
+        notification.to_user = request.user
+        notification.post = post
+        notification.review = revw
+        notification.type = "Intrest_level_2_Post_Reviwes"
+        notification.save()     
+
+    
+
     return redirect("product_detail",userid,id)
 
 
@@ -2525,6 +2573,65 @@ def reply(request,userid):
     reply_text= request.POST.get('reply_text')
     cmd =ReviewReply(reviews=reviews,replier=replier,reply_text=reply_text)
     cmd.save()
+
+
+    RevieReply = ReviewReply.objects.get(id=cmd.id)
+
+    
+
+    post_type = reviews.post.posts_type
+
+    if post_type == "page_post":
+        notification = Notifications()
+
+        notification.from_user = reviews.reviewer
+        notification.to_user = request.user
+        notification.pages = reviews.post.page_id
+        notification.post = reviews.post
+        notification.review = reviews
+        notification.ReviewReply = RevieReply
+
+        notification.type = "Page_Post_Reviwes_Replay"
+        notification.save()
+
+    elif post_type == "user_post":
+        notification = Notifications()
+        notification.from_user = reviews.reviewer
+        notification.to_user = request.user
+        
+        notification.post = reviews.post
+        notification.review = reviews
+        notification.ReviewReply = RevieReply
+
+        notification.type = "User_Post_Reviwes_Replay" 
+        notification.save()
+
+    elif post_type == "intrest_post":
+        notification = Notifications()
+        notification.from_user = reviews.reviewer
+        notification.to_user = request.user
+        
+        notification.post = reviews.post
+        notification.review = reviews
+        notification.ReviewReply = RevieReply
+
+        notification.type = "Intrest_Post_Reviwes_Replay" 
+        notification.save()
+
+    elif post_type == "lev_2_intrest_post":
+        notification = Notifications()
+        notification.from_user = reviews.reviewer
+        notification.to_user = request.user
+        
+        notification.post = reviews.post
+        notification.review = reviews
+        notification.ReviewReply = RevieReply
+
+        notification.type = "Intrest_Post_Reviwes_Replay" 
+        notification.save()        
+
+
+
     return redirect("review_reply",userid)
 
 

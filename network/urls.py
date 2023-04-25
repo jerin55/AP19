@@ -41,7 +41,9 @@ urlpatterns = [
     path('pageprofile/<int:pageid>',views.pageprofile,name="pageprofile"),
     path('n/cart',views.cart,name="cart"),
     path('n/checkout',views.checkout,name="checkout"),
-    path('n/product_detail/<int:id>/<int:userid>',views.product_detail,name="product_detail"),
+
+    path('product_detail/<int:id>/<int:userid>',views.product_detail,name="product_detail"),
+
     path('topicpage/<int:pk>',views.topicpage,name='topicpage'),
     path('subtopicpage/<int:pk>',views.subtopicpage,name='subtopicpage'),
     path('intrest_follow/<int:pk>', views.intrest_follow, name='intrest_follow'),

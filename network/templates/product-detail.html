@@ -125,10 +125,10 @@
                       <span class="close">&times;</span>
                       <div class="social-icons">
                           <div class="sales-share" style="display: flex;">
-                              <a href="" class="icon facebook facebook-btn" onclick="shareOnFacebook(event, 'http://127.0.0.1:8000/n/product_detail/{{ i.id }}/{{ i.creater.id }}');"><i class="fa fa-facebook"></i></a>
-                              <a href="#" class="icon twitter twitter-btn" onclick="shareOnTwitter(event, 'http://127.0.0.1:8000/n/product_detail/{{ i.id }}/{{ i.creater.id }}');"><i class="fa fa-twitter"></i></a>
-                              <a href="#" class="icon linkedin linkedin-btn" onclick="shareOnLinkedIn(event, 'http://127.0.0.1:8000/n/product_detail/{{ i.id }}/{{ i.creater.id }}');"><i class="fa fa-linkedin"></i></a>
-                              <a href="#" class="icon Whatsapp whatsapp-btn" onclick="shareOnWhatsApp(event, 'http://127.0.0.1:8000/n/product_detail/{{ i.id }}/{{ i.creater.id }}');"><i class="fa fa-whatsapp"></i></a>
+                              <a href="" class="icon facebook facebook-btn" onclick="shareOnFacebook(event, 'http://127.0.0.1:8000/product_detail/{{ i.id }}/{{ i.creater.id }}');"><i class="fa fa-facebook"></i></a>
+                              <a href="#" class="icon twitter twitter-btn" onclick="shareOnTwitter(event, 'http://127.0.0.1:8000/product_detail/{{ i.id }}/{{ i.creater.id }}');"><i class="fa fa-twitter"></i></a>
+                              <a href="#" class="icon linkedin linkedin-btn" onclick="shareOnLinkedIn(event, 'http://127.0.0.1:8000/product_detail/{{ i.id }}/{{ i.creater.id }}');"><i class="fa fa-linkedin"></i></a>
+                              <a href="#" class="icon Whatsapp whatsapp-btn" onclick="shareOnWhatsApp(event, 'http://127.0.0.1:8000/product_detail/{{ i.id }}/{{ i.creater.id }}');"><i class="fa fa-whatsapp"></i></a>
                           </div>
                       </div>
                       <label for="urlInput{{ i.id }}">Share to someone</label>
@@ -762,11 +762,11 @@
           var copyBtn = modal.querySelector("#copyBtn" + postId);
         
           // Set the URL value
-          urlInput.value = "http://127.0.0.1:8000/n/product_detail/" + postId + "/" + createrId;
+          urlInput.value = "http://127.0.0.1:8000/product_detail/" + postId + "/" + createrId;
         
           // When the user clicks the share button, open the modal popup
           modal.style.display = "block";
-        
+                                                                                                                                                                                                                                                                                                                                                                                                                  
           // When the user clicks the close button, close the modal popup
           span.onclick = function() {
             modal.style.display = "none";
